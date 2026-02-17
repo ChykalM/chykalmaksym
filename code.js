@@ -124,9 +124,9 @@ function drawCard(node, cardW) {
   }
 
   const label = figma.createText();
-  label.characters = node.name;
-  label.fontSize = style.size;
   label.fontName = { family: 'Inter', style: style.font };
+  label.fontSize = style.size;
+  label.characters = node.name;
   label.fills = [{ type: 'SOLID', color: rgb(style.text) }];
   label.textAlignHorizontal = 'CENTER';
   label.textAlignVertical = 'CENTER';
