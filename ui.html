@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #1a1a2e;
+      background: #ffffff;
+      padding: 20px;
+      user-select: none;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .header-icon {
+      width: 32px;
+      height: 32px;
+      background: #3c6bfb;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    h1 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0f0f1a;
+    }
+    .subtitle {
+      font-size: 11px;
+      color: #8b8fa8;
+      margin-bottom: 20px;
+      padding-left: 42px;
+    }
+
+    /* ── Info Banner ── */
+    .banner {
+      background: #f0f4ff;
+      border: 1px solid #c7d7fe;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 11.5px;
+      color: #3c5ee0;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .banner strong { font-weight: 600; }
+
+    /* ── Field ── */
+    .field { margin-bottom: 14px; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #5f6280;
+      margin-bottom: 6px;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1.5px solid #e4e6f0;
+      border-radius: 7px;
+      font-size: 13px;
+      color: #1a1a2e;
+      background: #fafafa;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%238b8fa8' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+      transition: border-color 0.15s;
+    }
+    select:focus {
+      outline: none;
+      border-color: #3c6bfb;
+    }
+
+    /* ── Preview Diagram ── */
+    .preview {
+      background: #f7f8fc;
+      border: 1.5px solid #e4e6f0;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .preview-label {
+      font-size: 10px;
+      color: #8b8fa8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    .p-row { display: flex; gap: 6px; justify-content: center; }
+    .p-node {
+      border-radius: 5px;
+      font-size: 9px;
+      font-weight: 500;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 22px;
+    }
+    .p-root  { background: #12102b; color: #fff; width: 80px; }
+    .p-page  { background: #3c6bfb; color: #fff; width: 60px; }
+    .p-frame { background: #fff; color: #1a1a2e; width: 50px; border: 1px solid #d8daea; }
+    .p-sub   { background: #f5f5ff; color: #565884; width: 42px; border: 1px solid #d8daea; }
+    .p-line  { width: 1px; height: 8px; background: #c8cade; margin: 0 auto; }
+    .p-hline {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      position: relative;
+    }
+    .p-branch { display: flex; flex-direction: column; align-items: center; }
+
+    /* ── Buttons ── */
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, opacity 0.15s;
+    }
+    .btn-primary { background: #3c6bfb; color: #fff; }
+    .btn-primary:hover { background: #2b58e8; }
+    .btn-primary:active { opacity: 0.85; }
+    .btn-secondary { background: #f0f0f7; color: #474760; }
+    .btn-secondary:hover { background: #e4e4f0; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-icon">🗺</div>
+    <h1>Sitemap Generator</h1>
+  </div>
+  <p class="subtitle">Visual sitemap from your file structure</p>
+
+  <div class="banner">
+    Creates a new <strong>"🗺 Sitemap"</strong> page with a tree diagram
+    of your file's pages and frames.
+  </div>
+
+  <!-- Preview diagram -->
+  <div class="preview">
+    <div class="preview-label">Preview</div>
+    <div class="p-row"><div class="p-node p-root">Root</div></div>
+    <div class="p-line"></div>
+    <div class="p-row">
+      <div class="p-branch">
+        <div class="p-node p-page">Page 1</div>
+        <div class="p-line"></div>
+        <div class="p-row">
+          <div class="p-node p-frame">Frame</div>
+          <div class="p-node p-frame">Frame</div>
+        </div>
+      </div>
+      <div style="width:6px"></div>
+      <div class="p-branch">
+        <div class="p-node p-page">Page 2</div>
+        <div class="p-line"></div>
+        <div class="p-node p-frame">Frame</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Depth -->
+  <div class="field">
+    <label>Depth</label>
+    <select id="depth">
+      <option value="1">1 — Pages only</option>
+      <option value="2" selected>2 — Pages + Frames</option>
+      <option value="3">3 — Pages + Frames + Sub-frames</option>
+    </select>
+  </div>
+
+  <!-- Card Width -->
+  <div class="field">
+    <label>Card Width</label>
+    <select id="cardWidth">
+      <option value="140">Compact (140 px)</option>
+      <option value="160" selected>Default (160 px)</option>
+      <option value="200">Wide (200 px)</option>
+    </select>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <button class="btn btn-secondary" id="cancel">Cancel</button>
+    <button class="btn btn-primary" id="generate">Generate Sitemap</button>
+  </div>
+
+  <script>
+    document.getElementById('generate').addEventListener('click', () => {
+      parent.postMessage({
+        pluginMessage: {
+          type: 'generate',
+          depth: parseInt(document.getElementById('depth').value),
+          cardWidth: parseInt(document.getElementById('cardWidth').value)
+        }
+      }, '*');
+    });
+
+    document.getElementById('cancel').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
+    });
+  </script>
+
+</body>
+</html>

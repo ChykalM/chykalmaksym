@@ -1,0 +1,13 @@
+{
+  "name": "figma-sitemap-generator",
+  "version": "1.0.0",
+  "description": "Figma plugin that generates a visual sitemap from the file's page and frame structure",
+  "scripts": {
+    "lint": "echo \"No build step required — plain JS plugin\""
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.90.0"
+  },
+  "keywords": ["figma", "plugin", "sitemap", "ux", "design"],
+  "license": "MIT"
+}
