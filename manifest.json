@@ -1,0 +1,9 @@
+{
+  "name": "Sitemap Generator",
+  "id": "sitemap-generator-mcp",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page"
+}
