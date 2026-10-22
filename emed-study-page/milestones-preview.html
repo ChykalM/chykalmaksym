@@ -1,0 +1,66 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Milestones Card Preview</title><link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400&family=Poppins:wght@400;500&display=swap" rel="stylesheet"><style>body{margin:0;font-family:Arial}section{background:#00346B;padding:120vh 16px 40vh}.wrap{max-width:686px;margin:0 auto}</style></head><body><section><div class="wrap"><!-- eMed | Weight-loss milestones card | standalone Webflow Code Embed
+     Drop into any section with a dark background (the card is 10% white, so the section colour shows through).
+     It fills the width of its parent; size it with the parent element in Webflow.
+     To change a value, edit the number and its --p width together. -->
+<style>
+.emwl{
+  --emwl-heading:"Frankruhllibre","Frank Ruhl Libre","Times New Roman",serif;
+  --emwl-body:"Poppins",Arial,sans-serif;
+  --emwl-ease:cubic-bezier(.22,1,.36,1);
+  box-sizing:border-box;width:100%;
+  padding:clamp(2rem,1.4rem + 2.4vw,3.4rem) clamp(1.5rem,1rem + 2vw,2.75rem) clamp(2rem,1.4rem + 2vw,2.75rem);
+  border-radius:8px;background:rgba(255,255,255,.1);color:#fff;
+  font-family:var(--emwl-body);-webkit-font-smoothing:antialiased;
+}
+.emwl *,.emwl *::before,.emwl *::after{box-sizing:border-box;font-family:var(--emwl-body)}
+.emwl :where(h3,p,ul,li){margin:0;padding:0;list-style:none}
+.emwl h3{font-family:var(--emwl-heading);font-weight:400;font-size:clamp(1.375rem,1.1rem + .8vw,1.75rem);line-height:1.3;letter-spacing:-.01em;color:#fff}
+.emwl__sub{margin-top:.75rem!important;font-weight:500;font-size:1rem;line-height:1.4;letter-spacing:-.01em}
+.emwl ul{display:flex;flex-direction:column;gap:clamp(2rem,1.5rem + 1.5vw,2.9rem);margin-top:clamp(2rem,1.6rem + 1.4vw,3.1rem)}
+.emwl li{display:grid;grid-template-columns:1fr auto;column-gap:1rem;row-gap:.95rem;font-size:clamp(1rem,.95rem + .2vw,1.125rem);line-height:1.33}
+.emwl__bar{grid-column:1/-1;height:.875rem;padding:.156rem .27rem;border-radius:8px;background:rgba(255,255,255,.1)}
+.emwl__bar span{display:block;height:100%;width:var(--p);border-radius:8px;background:#fff;transform-origin:left center}
+/* Bars fill when the card scrolls into view (only once the script has run, so they're never stuck empty) */
+.emwl.emwl-js .emwl__bar span{transform:scaleX(0)}
+.emwl.emwl-js.is-active .emwl__bar span{transform:none;transition:transform 1.4s var(--emwl-ease)}
+.emwl.emwl-js.is-active li:nth-child(2) .emwl__bar span{transition-delay:.15s}
+.emwl.emwl-js.is-active li:nth-child(3) .emwl__bar span{transition-delay:.3s}
+@media (prefers-reduced-motion:reduce){.emwl .emwl__bar span{transition:none!important}}
+</style>
+
+<div class="emwl">
+  <h3>Weight-loss milestone at 6 months</h3>
+  <p class="emwl__sub">(% of participants reaching each threshold)</p>
+  <ul>
+    <li><span>Lost weight</span><span>99.3%</span><div class="emwl__bar" aria-hidden="true"><span style="--p:99.3%"></span></div></li>
+    <li><span>Lost at least 5%</span><span>96.1%</span><div class="emwl__bar" aria-hidden="true"><span style="--p:96.1%"></span></div></li>
+    <li><span>Lost at least 10%</span><span>83.1%</span><div class="emwl__bar" aria-hidden="true"><span style="--p:83.1%"></span></div></li>
+  </ul>
+</div>
+
+<script>
+/* Fills the milestone bars when each card is half in view. Safe to use the embed more than once on a page. */
+(function () {
+  var ALLOWED = ['emed.com', 'emed.co.uk', 'webflow.io', 'localhost'];
+  var host = location.hostname;
+  if (host && !ALLOWED.some(function (d) { return host === d || host.slice(-d.length - 1) === '.' + d; })) {
+    return console.info('[emed milestones] bar animation off: "' + host + '" is not in the ALLOWED list');
+  }
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('is-active');
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.emwl:not([data-emwl-init])').forEach(function (card) {
+    card.setAttribute('data-emwl-init', '');
+    card.classList.add('emwl-js');
+    io.observe(card);
+  });
+})();
+</script>
+</div></section></body></html>

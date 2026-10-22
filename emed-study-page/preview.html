@@ -327,20 +327,20 @@ html.lenis,html.lenis body{height:auto}
   .emsp-miles li{font-size:1rem}
 }
 /* Scroll animations: only active once the script adds .emsp-js, so content stays visible without JS and in the Webflow Designer */
-.emsp-js [data-reveal]{opacity:0;translate:0 2.5rem;transition:opacity .9s var(--emsp-ease),translate .9s var(--emsp-ease);transition-delay:var(--d,0s)}
-.emsp-js [data-reveal].is-in{opacity:1;translate:none}
-.emsp-js .emsp-bar span{transform:scaleX(0);transition:transform 1.4s var(--emsp-ease)}
-.emsp-js .emsp-miles.is-active .emsp-bar span{transform:none}
-.emsp-js .emsp-miles li:nth-child(2) .emsp-bar span{transition-delay:.15s}
-.emsp-js .emsp-miles li:nth-child(3) .emsp-bar span{transition-delay:.3s}
+.emsp-js [data-reveal]{opacity:0;translate:0 2.5rem}
+.emsp-js [data-reveal].is-in{opacity:1;translate:none;transition:opacity .9s var(--emsp-ease),translate .9s var(--emsp-ease);transition-delay:var(--d,0s)}
+.emsp-js .emsp-bar span{transform:scaleX(0)}
+.emsp-js .emsp-miles.is-active .emsp-bar span{transform:none;transition:transform 1.4s var(--emsp-ease)}
+.emsp-js .emsp-miles.is-active li:nth-child(2) .emsp-bar span{transition-delay:.15s}
+.emsp-js .emsp-miles.is-active li:nth-child(3) .emsp-bar span{transition-delay:.3s}
 /* Lipid charts draw in when the card comes into view: gridlines grow, line draws left to right, end point fades in */
-.emsp-js .emsp-chart .emsp-grid{transform:scaleY(0);transform-box:fill-box;transform-origin:center bottom;transition:transform .9s var(--emsp-ease)}
-.emsp-js .emsp-chart .emsp-curve{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s cubic-bezier(.65,0,.35,1) .25s}
-.emsp-js .emsp-chart :is(.emsp-start,.emsp-end){opacity:0;transition:opacity .5s ease}
-.emsp-js .emsp-chart .emsp-end{transition-delay:1.6s}
-.emsp-js .emsp-chart.is-active .emsp-grid{transform:none}
-.emsp-js .emsp-chart.is-active .emsp-curve{stroke-dashoffset:0}
-.emsp-js .emsp-chart.is-active :is(.emsp-start,.emsp-end){opacity:1}
+.emsp-js .emsp-chart .emsp-grid{transform:scaleY(0);transform-box:fill-box;transform-origin:center bottom}
+.emsp-js .emsp-chart .emsp-curve{stroke-dasharray:1;stroke-dashoffset:1}
+.emsp-js .emsp-chart :is(.emsp-start,.emsp-end){opacity:0}
+.emsp-js .emsp-chart.is-active .emsp-grid{transform:none;transition:transform .9s var(--emsp-ease)}
+.emsp-js .emsp-chart.is-active .emsp-curve{stroke-dashoffset:0;transition:stroke-dashoffset 1.6s cubic-bezier(.65,0,.35,1) .25s}
+.emsp-js .emsp-chart.is-active :is(.emsp-start,.emsp-end){opacity:1;transition:opacity .5s ease}
+.emsp-js .emsp-chart.is-active .emsp-end{transition-delay:1.6s}
 @media (prefers-reduced-motion:reduce){.emsp *{transition:none!important}}
 </style>
 
