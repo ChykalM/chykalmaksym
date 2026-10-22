@@ -1,13 +1,130 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>eMed Study Page Preview</title><link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400&family=Poppins:wght@400;500&display=swap" rel="stylesheet"><style>body{margin:0}</style></head><body><!-- eMed GLP-1 Study page | Webflow embed | built from Figma "study page" (node 1:76)
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>eMed Study Page Preview</title><!-- eMed GLP-1 study page | paste into Webflow: Page Settings > Custom Code > Inside <head> tag
+     Loads the fonts, Lenis smooth scroll and the page's scroll animations.
+     The page markup and styles live in embed.html (a Code Embed in the page body). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}
+.lenis.lenis-smooth iframe{pointer-events:none}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js" defer></script>
+<script>
+/* Smooth scroll (Lenis), reveal-on-scroll, milestone bars, stacking lipid cards, professor parallax */
+(function () {
+  // Domains where the animations run (staging and production). Add yours here if it's missing.
+  var ALLOWED = ['emed.com', 'emed.co.uk', 'webflow.io', 'localhost'];
+
+  function log(msg) { if (window.console) console.info('[emed study page] ' + msg); }
+  function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
+
+  function init() {
+    var root = document.querySelector('.emsp');
+    if (!root) return log('page embed (.emsp) not found, animations off');
+    if (root.hasAttribute('data-emsp-init')) return;
+    root.setAttribute('data-emsp-init', '');
+
+    var host = location.hostname;
+    var allowed = !host || ALLOWED.some(function (d) { return host === d || host.slice(-d.length - 1) === '.' + d; });
+    if (!allowed) return log('animations off: "' + host + '" is not in the ALLOWED list');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return log('animations off: the device has "reduce motion" turned on');
+    if (!('IntersectionObserver' in window)) return log('animations off: browser not supported');
+
+    root.classList.add('emsp-js');
+
+    // Smooth scroll. Skipped if the site already runs Lenis.
+    if (document.documentElement.classList.contains('lenis')) {
+      log('Lenis already running on the site, not starting a second one');
+    } else if (window.Lenis) {
+      window.emspLenis = new window.Lenis({ autoRaf: true, anchors: true });
+    } else {
+      log('Lenis failed to load, using native scrolling');
+    }
+
+    // Reveal from bottom, once.
+    var reveal = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        reveal.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -10% 0px' });
+    root.querySelectorAll('[data-reveal]').forEach(function (el) { reveal.observe(el); });
+
+    // Milestone bars and lipid charts animate in once each card is mostly in view.
+    var miles = root.querySelector('.emsp-miles');
+    if (miles) {
+      var bars = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        miles.classList.add('is-active');
+        bars.disconnect();
+      }, { threshold: 0.5 });
+      bars.observe(miles);
+    }
+
+    var cards = [].slice.call(root.querySelectorAll('.emsp-chart'));
+    var charts = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-active');
+        charts.unobserve(e.target);
+      });
+    }, { threshold: 0.5 });
+    cards.forEach(function (c) { charts.observe(c); });
+    var quote = root.querySelector('.emsp-quote');
+    var media = quote && quote.querySelector('.emsp-quote__media');
+    var figure = quote && quote.querySelector('figure');
+
+    function update() {
+      queued = false;
+      var vh = window.innerHeight;
+
+      // Stacking cards: each card shrinks slightly as the next one slides over it.
+      var covered = 0;
+      for (var i = cards.length - 1; i >= 0; i--) {
+        cards[i].style.scale = (1 - 0.04 * covered).toFixed(4);
+        if (i === 0) break;
+        var prev = cards[i - 1];
+        var gap = cards[i].getBoundingClientRect().top - prev.getBoundingClientRect().top;
+        covered += clamp(1 - (gap - 24) / prev.offsetHeight, 0, 1);
+      }
+
+      // Professor section: photo lags behind the scroll (almost sticky), quote drifts down.
+      if (media) {
+        var r = quote.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < vh) {
+          var p = clamp((vh - r.top) / (vh + r.height), 0, 1) - 0.5; // -0.5 entering, +0.5 leaving
+          media.style.transform = 'translate3d(0,' + (p * 2 * 0.15 * r.height).toFixed(1) + 'px,0)';
+          figure.style.transform = 'translate3d(0,' + (p * 120).toFixed(1) + 'px,0)';
+        }
+      }
+    }
+    var queued = false;
+    window.addEventListener('scroll', function () {
+      if (!queued) { queued = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+    log('animations on');
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
+<style>body{margin:0}</style></head><body><!-- eMed GLP-1 Study page | Webflow embed | built from Figma "study page" (node 1:76)
      Everything is scoped under .emsp so it can't leak into the rest of the site.
-     Before publishing, replace the image placeholders. Search for: REPLACE_ -->
+     Before publishing, replace the image placeholders. Search for: REPLACE_
+     Fonts, smooth scroll and animations are loaded by head.html (Page Settings > Inside <head> tag). -->
 <style>
 .emsp{
   /* eMed tokens (style guide section 8) */
   --brand-500:#057FFF;
   --brand-700:color-mix(in oklch,#057FFF,black 30%);
   --text:oklch(0.0613 0.0212 256.518);
-  --font-display:"PP Editorial New","Frankruhllibre","Frank Ruhl Libre","Times New Roman",serif;
+  --font-display:"Frankruhllibre","Frank Ruhl Libre","Times New Roman",serif;
   --font-body:"Poppins",Arial,sans-serif;
   /* Page-specific values taken from the Figma design */
   --emsp-bg:#ECF1F8;
@@ -33,6 +150,10 @@
   overflow-x:clip; /* clip, not hidden, so position:sticky keeps working */
 }
 .emsp *,.emsp *::before,.emsp *::after{box-sizing:border-box}
+/* Fonts: all headings Frankruhllibre, all other text Poppins. Set on every element so Webflow's global tag styles can't override them. */
+.emsp *{font-family:var(--font-body)}
+.emsp :is(h1,h2,h3,h4,h5,h6){font-family:var(--font-display);font-weight:400}
+.emsp :is(h1,h2,h3,h4,h5,h6) *,.emsp-nw,.emsp-num small{font-family:inherit}
 .emsp :where(h1,h2,h3,h4,p,ul,ol,li,figure,blockquote){margin:0;padding:0}
 .emsp :where(ul,ol){list-style:none}
 .emsp img{display:block;max-width:100%}
@@ -52,7 +173,6 @@
 .emsp-h2--sm{font-size:clamp(2rem,1.6rem + 1.2vw,2.75rem)}
 .emsp-h3{font-size:clamp(1.75rem,1.5rem + .8vw,2.25rem)}
 .emsp-lead{font-size:1rem;line-height:1.5;text-wrap:pretty}
-.emsp-light{font-weight:200}
 .emsp-nw{white-space:nowrap}
 
 /* Buttons */
@@ -75,10 +195,13 @@
 .emsp-hero .emsp-btns{margin-top:3rem}
 
 /* 2. Quote over portrait */
-.emsp-quote{position:relative;background:var(--emsp-navy);color:#fff;min-height:clamp(36rem,30rem + 25vw,62.7rem);display:flex;align-items:center}
+.emsp-quote{position:relative;overflow:hidden;background:var(--emsp-navy);color:#fff;min-height:clamp(36rem,30rem + 25vw,62.7rem);display:flex;align-items:center}
 .emsp-quote__media{position:absolute;inset:0}
 .emsp-quote__media img{width:100%;height:100%;object-fit:cover;object-position:25% top}
-.emsp-quote__media::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:35.6%;background:linear-gradient(to bottom,rgba(0,52,107,0),var(--emsp-navy));pointer-events:none}
+.emsp-quote::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:35.6%;background:linear-gradient(to bottom,rgba(0,52,107,0),var(--emsp-navy));pointer-events:none}
+/* Parallax: the photo layer is 30% taller than the section so it can lag behind the scroll without showing edges */
+.emsp-js .emsp-quote__media{inset:-15% 0;will-change:transform}
+.emsp-js .emsp-quote figure{will-change:transform}
 .emsp-quote .emsp-wrap{position:relative;z-index:1;display:flex;justify-content:flex-end}
 .emsp-quote figure{width:32.5rem;max-width:100%;margin-right:2.5rem}
 .emsp-quote blockquote{font-family:var(--font-display);font-size:clamp(1.5rem,1.2rem + 1vw,2rem);line-height:1.25;text-wrap:pretty}
@@ -91,9 +214,10 @@
 .emsp-row{display:grid;grid-template-columns:484fr 686fr;gap:1.9rem;margin-top:clamp(3rem,2rem + 3vw,4.7rem)}
 .emsp-card{background:var(--emsp-card-dark);border-radius:var(--emsp-radius)}
 .emsp-big{display:flex;flex-direction:column;justify-content:space-between;gap:3rem;min-height:30rem;padding:5.9rem 1.9rem 3.1rem}
-.emsp-big__num{display:flex;align-items:flex-end;font-family:var(--font-display);font-weight:200;font-size:clamp(5rem,3.5rem + 4vw,7.875rem);line-height:.8;letter-spacing:-.02em}
+.emsp-big__num{display:flex;align-items:flex-end;font-family:var(--font-display);font-weight:300;font-size:clamp(5rem,3.5rem + 4vw,7.875rem);line-height:.8;letter-spacing:-.02em}
 .emsp-big__num small{font-family:var(--font-body);font-weight:500;font-size:clamp(1.75rem,1.4rem + 1vw,2.625rem);line-height:1;letter-spacing:-.02em;margin-left:.6rem}
-.emsp-big p,.emsp-miles h3{font-weight:500;font-size:clamp(1.375rem,1.1rem + .8vw,1.75rem);line-height:1.4;letter-spacing:-.01em}
+.emsp-big p{font-weight:500;font-size:clamp(1.375rem,1.1rem + .8vw,1.75rem);line-height:1.4;letter-spacing:-.01em}
+.emsp-miles h3{font-size:clamp(1.375rem,1.1rem + .8vw,1.75rem);line-height:1.4;letter-spacing:-.01em}
 .emsp-miles{padding:3.4rem 2.75rem 2.75rem 2.6rem}
 .emsp-miles__sub{font-weight:500;font-size:1rem;line-height:1.4;letter-spacing:-.01em;margin-top:.15rem}
 .emsp-miles ul{display:flex;flex-direction:column;gap:2.9rem;margin-top:3.1rem}
@@ -122,9 +246,9 @@
 .emsp-metric{padding:.5rem;display:flex;flex-direction:column;gap:2.5rem}
 .emsp-metric+.emsp-metric{border-left:1px solid var(--emsp-line);padding-left:2.5rem}
 .emsp-metric:not(:last-child){padding-right:2.5rem}
-.emsp-num{font-family:var(--font-display);font-weight:200;font-size:clamp(3.5rem,2.8rem + 2vw,4.5rem);line-height:1;letter-spacing:-.02em}
+.emsp-num{font-family:var(--font-display);font-weight:300;font-size:clamp(3.5rem,2.8rem + 2vw,4.5rem);line-height:1;letter-spacing:-.02em}
 .emsp-num small{font-size:.72em}
-.emsp-metric h3{font-weight:500;font-size:1.125rem;line-height:1.33}
+.emsp-metric h3{font-size:1.375rem;line-height:1.25}
 .emsp-metric p{font-size:.875rem;line-height:1.7;margin-top:.5rem}
 .emsp-lipids{margin-top:clamp(5rem,4rem + 3vw,9.5rem)}
 .emsp-lipids .emsp-h3{margin-top:1.5rem}
@@ -132,7 +256,7 @@
 /* Cards stick and stack on scroll. Solid fill (the Figma 50% white flattened onto the page bg) so stacked cards don't show through. */
 .emsp-charts{display:flex;flex-direction:column;gap:1.5rem;max-width:45rem;margin:3rem auto 0}
 .emsp-chart{position:sticky;top:calc(var(--emsp-stack-top) + var(--i,0) * 1.5rem);transform-origin:center top;display:grid;grid-template-columns:46.3% 1fr;align-items:center;min-height:15.66rem;padding:1.5rem 2.2rem 1.5rem 2.7rem;background:#F6F8FC;border:1px solid #DEE7F3;border-radius:10px;color:#000C1A}
-.emsp-chart h4{font-weight:500;font-size:1.5rem;line-height:1.4;letter-spacing:-.03em}
+.emsp-chart h4{font-size:1.75rem;line-height:1.25;letter-spacing:-.01em}
 .emsp-chart .emsp-num{margin-top:1.4rem}
 .emsp-chart p{font-size:.875rem;line-height:1.4;letter-spacing:-.03em;opacity:.6;margin-top:.1rem}
 .emsp-chart svg{width:100%;height:auto;overflow:visible}
@@ -147,7 +271,7 @@
 .emsp-list li{display:grid;grid-template-columns:1.5rem 1fr;column-gap:3.6rem;padding:2.5rem 0;border-bottom:1px solid var(--emsp-line)}
 .emsp-list li:last-child{border-bottom:0;padding-bottom:0}
 .emsp-dot{display:grid;place-items:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--brand-500);color:#fff;font-size:1rem;line-height:1}
-.emsp-list h3{font-weight:500;font-size:1.25rem;line-height:1.5;color:#000}
+.emsp-list h3{font-size:1.5rem;line-height:1.3;color:#000}
 .emsp-list p{margin-top:.5rem;color:#000}
 
 /* 6. Contact */
@@ -158,7 +282,7 @@
 .emsp-options li:first-child{padding-left:0}
 .emsp-options li:last-child{padding-right:0}
 .emsp-options li+li{border-left:1px solid var(--emsp-line)}
-.emsp-options h3{font-weight:500;font-size:1rem;letter-spacing:-.01em;line-height:1.5}
+.emsp-options h3{font-size:1.25rem;line-height:1.3}
 .emsp-options p{font-size:.875rem;letter-spacing:-.01em;opacity:.6;line-height:1.5}
 .emsp-contact__cta{display:flex;justify-content:center;margin-top:4rem}
 
@@ -177,7 +301,7 @@
   /* Photo stays the background; the quote moves to the bottom, over a taller fade */
   .emsp-quote{align-items:flex-end;min-height:max(40rem,125vw);padding-bottom:3rem}
   .emsp-quote__media img{object-position:28% top}
-  .emsp-quote__media::after{height:65%}
+  .emsp-quote::after{height:65%}
   .emsp-quote .emsp-wrap{justify-content:flex-start}
   .emsp-quote figure{width:auto;max-width:40rem;margin-right:0}
 }
@@ -208,13 +332,15 @@
 .emsp-js .emsp-miles.is-active .emsp-bar span{transform:none}
 .emsp-js .emsp-miles li:nth-child(2) .emsp-bar span{transition-delay:.15s}
 .emsp-js .emsp-miles li:nth-child(3) .emsp-bar span{transition-delay:.3s}
+/* Lipid charts draw in when the card comes into view: gridlines grow, line draws left to right, end point fades in */
+.emsp-js .emsp-chart .emsp-grid{transform:scaleY(0);transform-box:fill-box;transform-origin:center bottom;transition:transform .9s var(--emsp-ease)}
+.emsp-js .emsp-chart .emsp-curve{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s cubic-bezier(.65,0,.35,1) .25s}
+.emsp-js .emsp-chart :is(.emsp-start,.emsp-end){opacity:0;transition:opacity .5s ease}
+.emsp-js .emsp-chart .emsp-end{transition-delay:1.6s}
+.emsp-js .emsp-chart.is-active .emsp-grid{transform:none}
+.emsp-js .emsp-chart.is-active .emsp-curve{stroke-dashoffset:0}
+.emsp-js .emsp-chart.is-active :is(.emsp-start,.emsp-end){opacity:1}
 @media (prefers-reduced-motion:reduce){.emsp *{transition:none!important}}
-
-/* Lenis (smooth scroll) base styles */
-html.lenis,html.lenis body{height:auto}
-.lenis.lenis-smooth{scroll-behavior:auto!important}
-.lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}
-.lenis.lenis-smooth iframe{pointer-events:none}
 </style>
 
 <div class="emsp" style="--emsp-hero-texture:url('REPLACE_HERO_TEXTURE_URL')">
@@ -323,33 +449,33 @@ html.lenis,html.lenis body{height:auto}
             <div><h4>Total cholesterol</h4><div class="emsp-num">-13<small>%</small></div><p>5.71 → 4.94 mmol/L</p></div>
             <svg viewBox="0 0 351 203" role="img" aria-label="Total cholesterol fell from 5.71 to 4.94 mmol/L">
               <defs><linearGradient id="emsp-g1" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#C8D6EA" stop-opacity=".9"/><stop offset="1" stop-color="#C8D6EA" stop-opacity="0"/></linearGradient></defs>
-              <g stroke="url(#emsp-g1)" stroke-width="1"><path d="M19.6 169.2v-84.5M79.2 169.2v-68.8M138.8 169.2v-58.2M199 169.2v-49.9M259.2 169.2v-43.6"/></g>
-              <path d="M19.6 81.7C150 81.7 270 84 298 102S317 122 320.2 125" fill="none" stroke="var(--emsp-chart)" stroke-width="3" stroke-linecap="round"/>
-              <circle cx="19.6" cy="81.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
-              <circle cx="320.2" cy="125" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
-              <text x="13.8" y="44">5.71 mmol/L</text><text x="350" y="158" text-anchor="end">4.94 mmol/L</text>
+              <g class="emsp-grid" stroke="url(#emsp-g1)" stroke-width="1"><path d="M19.6 169.2v-84.5M79.2 169.2v-68.8M138.8 169.2v-58.2M199 169.2v-49.9M259.2 169.2v-43.6"/></g>
+              <path class="emsp-curve" pathLength="1" d="M19.6 81.7C150 81.7 270 84 298 102S317 122 320.2 125" fill="none" stroke="var(--emsp-chart)" stroke-width="3" stroke-linecap="round"/>
+              <circle class="emsp-start" cx="19.6" cy="81.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
+              <circle class="emsp-end" cx="320.2" cy="125" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
+              <text class="emsp-start" x="13.8" y="44">5.71 mmol/L</text><text class="emsp-end" x="350" y="158" text-anchor="end">4.94 mmol/L</text>
             </svg>
           </div>
           <div class="emsp-chart" data-reveal style="--i:1">
             <div><h4>LDL cholesterol</h4><div class="emsp-num">-16<small>%</small></div><p>3.77 → 3.16 mmol/L</p></div>
             <svg viewBox="0 0 351 203" role="img" aria-label="LDL cholesterol fell from 3.77 to 3.16 mmol/L">
               <defs><linearGradient id="emsp-g2" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#C8D6EA" stop-opacity=".9"/><stop offset="1" stop-color="#C8D6EA" stop-opacity="0"/></linearGradient></defs>
-              <g stroke="url(#emsp-g2)" stroke-width="1"><path d="M19.6 169.2v-79.9M79.2 169.2v-59.7M138.8 169.2v-50.6M199 169.2v-43.3M259.2 169.2v-37.8"/></g>
-              <path d="M19.6 81.7C90 86 150 104 210 120S300 140 320.2 145" fill="none" stroke="var(--emsp-chart)" stroke-width="3" stroke-linecap="round"/>
-              <circle cx="19.6" cy="81.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
-              <circle cx="320.2" cy="145" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
-              <text x="13.8" y="44">3.77 mmol/L</text><text x="350" y="168" text-anchor="end">3.16 mmol/L</text>
+              <g class="emsp-grid" stroke="url(#emsp-g2)" stroke-width="1"><path d="M19.6 169.2v-79.9M79.2 169.2v-59.7M138.8 169.2v-50.6M199 169.2v-43.3M259.2 169.2v-37.8"/></g>
+              <path class="emsp-curve" pathLength="1" d="M19.6 81.7C90 86 150 104 210 120S300 140 320.2 145" fill="none" stroke="var(--emsp-chart)" stroke-width="3" stroke-linecap="round"/>
+              <circle class="emsp-start" cx="19.6" cy="81.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
+              <circle class="emsp-end" cx="320.2" cy="145" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
+              <text class="emsp-start" x="13.8" y="44">3.77 mmol/L</text><text class="emsp-end" x="350" y="168" text-anchor="end">3.16 mmol/L</text>
             </svg>
           </div>
           <div class="emsp-chart" data-reveal style="--i:2">
             <div><h4>Triglycerides</h4><div class="emsp-num">-29<small>%</small></div><p>1.64 → 1.17 mmol/L</p></div>
             <svg viewBox="0 0 351 203" role="img" aria-label="Triglycerides fell from 1.64 to 1.17 mmol/L">
               <defs><linearGradient id="emsp-g3" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#C8D6EA" stop-opacity=".9"/><stop offset="1" stop-color="#C8D6EA" stop-opacity="0"/></linearGradient></defs>
-              <g stroke="url(#emsp-g3)" stroke-width="1"><path d="M19.6 169.2v-100M79.2 169.2v-81.4M138.8 169.2v-68.9M199 169.2v-59M259.2 169.2v-51.5"/></g>
-              <path d="M19.6 61.7C70 72 110 100 170 116S280 134 321.2 143.7" fill="none" stroke="var(--emsp-chart)" stroke-width="3" stroke-linecap="round"/>
-              <circle cx="19.6" cy="61.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
-              <circle cx="321.2" cy="143.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
-              <text x="13.8" y="40">1.64 mmol/L</text><text x="350" y="168" text-anchor="end">1.17 mmol/L</text>
+              <g class="emsp-grid" stroke="url(#emsp-g3)" stroke-width="1"><path d="M19.6 169.2v-100M79.2 169.2v-81.4M138.8 169.2v-68.9M199 169.2v-59M259.2 169.2v-51.5"/></g>
+              <path class="emsp-curve" pathLength="1" d="M19.6 61.7C70 72 110 100 170 116S280 134 321.2 143.7" fill="none" stroke="var(--emsp-chart)" stroke-width="3" stroke-linecap="round"/>
+              <circle class="emsp-start" cx="19.6" cy="61.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
+              <circle class="emsp-end" cx="321.2" cy="143.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
+              <text class="emsp-start" x="13.8" y="40">1.64 mmol/L</text><text class="emsp-end" x="350" y="168" text-anchor="end">1.17 mmol/L</text>
             </svg>
           </div>
         </div>
@@ -396,75 +522,4 @@ html.lenis,html.lenis body{height:auto}
   </section>
 
 </div>
-
-<script>
-/* eMed study page: smooth scroll (Lenis), reveal-on-scroll, milestone bars, stacking lipid cards */
-(function () {
-  var root = document.querySelector('.emsp');
-  if (!root || root.hasAttribute('data-emsp-init')) return;
-  root.setAttribute('data-emsp-init', '');
-
-  // Hostname guard: only run on eMed production/staging (and local previews).
-  var host = location.hostname;
-  if (host && !/(^|\.)emed\.com$/.test(host) && !/\.webflow\.io$/.test(host) && host !== 'localhost') return;
-
-  // Reduced motion: leave everything static and visible, no smooth scroll.
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
-  root.classList.add('emsp-js');
-
-  // Smooth scroll. Skipped if the site already runs Lenis.
-  if (!window.Lenis && !document.documentElement.classList.contains('lenis')) {
-    var s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js';
-    s.async = true;
-    s.onload = function () {
-      window.emspLenis = new window.Lenis({ autoRaf: true, anchors: true });
-    };
-    document.head.appendChild(s);
-  }
-
-  // Reveal from bottom, once.
-  var reveal = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      e.target.classList.add('is-in');
-      reveal.unobserve(e.target);
-    });
-  }, { rootMargin: '0px 0px -10% 0px' });
-  root.querySelectorAll('[data-reveal]').forEach(function (el) { reveal.observe(el); });
-
-  // Milestone bars fill when the card is mostly in view.
-  var miles = root.querySelector('.emsp-miles');
-  if (miles) {
-    var bars = new IntersectionObserver(function (entries) {
-      if (!entries[0].isIntersecting) return;
-      miles.classList.add('is-active');
-      bars.disconnect();
-    }, { threshold: 0.5 });
-    bars.observe(miles);
-  }
-
-  // Stacking cards: each card shrinks slightly as the next one slides over it.
-  var cards = [].slice.call(root.querySelectorAll('.emsp-chart'));
-  var queued = false;
-  function stack() {
-    queued = false;
-    var covered = 0;
-    for (var i = cards.length - 1; i >= 0; i--) {
-      cards[i].style.scale = (1 - 0.04 * covered).toFixed(4);
-      if (i === 0) break;
-      var prev = cards[i - 1];
-      var gap = cards[i].getBoundingClientRect().top - prev.getBoundingClientRect().top;
-      var p = 1 - (gap - 24) / prev.offsetHeight;
-      covered += Math.min(Math.max(p, 0), 1);
-    }
-  }
-  if (cards.length > 1) {
-    window.addEventListener('scroll', function () {
-      if (!queued) { queued = true; requestAnimationFrame(stack); }
-    }, { passive: true });
-    stack();
-  }
-})();
-</script>
 </body></html>

@@ -1,0 +1,116 @@
+<!-- eMed GLP-1 study page | paste into Webflow: Page Settings > Custom Code > Inside <head> tag
+     Loads the fonts, Lenis smooth scroll and the page's scroll animations.
+     The page markup and styles live in embed.html (a Code Embed in the page body). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}
+.lenis.lenis-smooth iframe{pointer-events:none}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js" defer></script>
+<script>
+/* Smooth scroll (Lenis), reveal-on-scroll, milestone bars, stacking lipid cards, professor parallax */
+(function () {
+  // Domains where the animations run (staging and production). Add yours here if it's missing.
+  var ALLOWED = ['emed.com', 'emed.co.uk', 'webflow.io', 'localhost'];
+
+  function log(msg) { if (window.console) console.info('[emed study page] ' + msg); }
+  function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
+
+  function init() {
+    var root = document.querySelector('.emsp');
+    if (!root) return log('page embed (.emsp) not found, animations off');
+    if (root.hasAttribute('data-emsp-init')) return;
+    root.setAttribute('data-emsp-init', '');
+
+    var host = location.hostname;
+    var allowed = !host || ALLOWED.some(function (d) { return host === d || host.slice(-d.length - 1) === '.' + d; });
+    if (!allowed) return log('animations off: "' + host + '" is not in the ALLOWED list');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return log('animations off: the device has "reduce motion" turned on');
+    if (!('IntersectionObserver' in window)) return log('animations off: browser not supported');
+
+    root.classList.add('emsp-js');
+
+    // Smooth scroll. Skipped if the site already runs Lenis.
+    if (document.documentElement.classList.contains('lenis')) {
+      log('Lenis already running on the site, not starting a second one');
+    } else if (window.Lenis) {
+      window.emspLenis = new window.Lenis({ autoRaf: true, anchors: true });
+    } else {
+      log('Lenis failed to load, using native scrolling');
+    }
+
+    // Reveal from bottom, once.
+    var reveal = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        reveal.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -10% 0px' });
+    root.querySelectorAll('[data-reveal]').forEach(function (el) { reveal.observe(el); });
+
+    // Milestone bars and lipid charts animate in once each card is mostly in view.
+    var miles = root.querySelector('.emsp-miles');
+    if (miles) {
+      var bars = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        miles.classList.add('is-active');
+        bars.disconnect();
+      }, { threshold: 0.5 });
+      bars.observe(miles);
+    }
+
+    var cards = [].slice.call(root.querySelectorAll('.emsp-chart'));
+    var charts = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-active');
+        charts.unobserve(e.target);
+      });
+    }, { threshold: 0.5 });
+    cards.forEach(function (c) { charts.observe(c); });
+    var quote = root.querySelector('.emsp-quote');
+    var media = quote && quote.querySelector('.emsp-quote__media');
+    var figure = quote && quote.querySelector('figure');
+
+    function update() {
+      queued = false;
+      var vh = window.innerHeight;
+
+      // Stacking cards: each card shrinks slightly as the next one slides over it.
+      var covered = 0;
+      for (var i = cards.length - 1; i >= 0; i--) {
+        cards[i].style.scale = (1 - 0.04 * covered).toFixed(4);
+        if (i === 0) break;
+        var prev = cards[i - 1];
+        var gap = cards[i].getBoundingClientRect().top - prev.getBoundingClientRect().top;
+        covered += clamp(1 - (gap - 24) / prev.offsetHeight, 0, 1);
+      }
+
+      // Professor section: photo lags behind the scroll (almost sticky), quote drifts down.
+      if (media) {
+        var r = quote.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < vh) {
+          var p = clamp((vh - r.top) / (vh + r.height), 0, 1) - 0.5; // -0.5 entering, +0.5 leaving
+          media.style.transform = 'translate3d(0,' + (p * 2 * 0.15 * r.height).toFixed(1) + 'px,0)';
+          figure.style.transform = 'translate3d(0,' + (p * 120).toFixed(1) + 'px,0)';
+        }
+      }
+    }
+    var queued = false;
+    window.addEventListener('scroll', function () {
+      if (!queued) { queued = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+    log('animations on');
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
