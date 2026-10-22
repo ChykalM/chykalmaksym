@@ -1,0 +1,129 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lipid Cards Preview</title><link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400&family=Poppins:wght@400;500&display=swap" rel="stylesheet"><style>body{margin:0;background:#ECF1F8;font-family:Arial}section{padding:100vh 16px 120vh}.note{text-align:center;color:#888;margin-bottom:3rem}</style></head><body><section><p class="note">Your Webflow heading goes here</p><!-- eMed | Lipid marker reduction cards | standalone Webflow Code Embed (no section heading: add it in Webflow above this embed)
+     Cards stack on scroll and each chart draws in when its card comes into view.
+     Stacking needs every parent of this embed to have overflow: visible (hidden breaks position: sticky). -->
+<style>
+.emlc{
+  --emlc-heading:"Frankruhllibre","Frank Ruhl Libre","Times New Roman",serif;
+  --emlc-body:"Poppins",Arial,sans-serif;
+  --emlc-line:#1D6BD0;
+  --emlc-card-bg:#F6F8FC;   /* solid so stacked cards don't show through; matches 50% white on the #ECF1F8 page bg */
+  --emlc-card-border:#DEE7F3;
+  --emlc-stack-top:clamp(5.5rem,4rem + 6vh,8rem); /* distance from the top of the screen where cards stick; raise if the nav is taller */
+  --emlc-ease:cubic-bezier(.22,1,.36,1);
+  display:flex;flex-direction:column;gap:1.5rem;width:100%;max-width:45rem;margin-inline:auto;
+  font-family:var(--emlc-body);color:#000C1A;-webkit-font-smoothing:antialiased;
+}
+.emlc *,.emlc *::before,.emlc *::after{box-sizing:border-box;font-family:var(--emlc-body)}
+.emlc :where(h4,p){margin:0;padding:0}
+.emlc-card{position:sticky;top:calc(var(--emlc-stack-top) + var(--i,0) * 1.5rem);transform-origin:center top;display:grid;grid-template-columns:46.3% 1fr;align-items:center;min-height:15.66rem;padding:1.5rem 2.2rem 1.5rem 2.7rem;background:var(--emlc-card-bg);border:1px solid var(--emlc-card-border);border-radius:10px}
+.emlc-card h4{font-family:var(--emlc-heading);font-weight:400;font-size:1.75rem;line-height:1.25;letter-spacing:-.01em;color:#000C1A}
+.emlc-num{margin-top:1.4rem;font-family:var(--emlc-heading)!important;font-weight:300;font-size:clamp(3.5rem,2.8rem + 2vw,4.5rem);line-height:1;letter-spacing:-.02em;color:#1A1A1A}
+.emlc-num small{font-family:inherit!important;font-size:.72em}
+.emlc-card p{margin-top:.75rem;font-size:.875rem;line-height:1.4;letter-spacing:-.03em;opacity:.6}
+.emlc-card svg{width:100%;height:auto;overflow:visible}
+.emlc-card svg text{font-size:14px;letter-spacing:-.42px;fill:#000C1A;fill-opacity:.6}
+@media (max-width:767px){
+  .emlc-card{grid-template-columns:1fr;row-gap:1.5rem;padding:1.75rem 1.5rem}
+  .emlc-card svg text{font-size:19px}
+}
+/* Animations: only once the script has run, and only on the way in */
+.emlc.emlc-js .emlc-card{opacity:0;translate:0 2.5rem}
+.emlc.emlc-js .emlc-card.is-in{opacity:1;translate:none;transition:opacity .9s var(--emlc-ease),translate .9s var(--emlc-ease)}
+.emlc.emlc-js .emlc-grid{transform:scaleY(0);transform-box:fill-box;transform-origin:center bottom}
+.emlc.emlc-js .emlc-curve{stroke-dasharray:1;stroke-dashoffset:1}
+.emlc.emlc-js :is(.emlc-start,.emlc-end){opacity:0}
+.emlc.emlc-js .is-active .emlc-grid{transform:none;transition:transform .9s var(--emlc-ease)}
+.emlc.emlc-js .is-active .emlc-curve{stroke-dashoffset:0;transition:stroke-dashoffset 1.6s cubic-bezier(.65,0,.35,1) .25s}
+.emlc.emlc-js .is-active :is(.emlc-start,.emlc-end){opacity:1;transition:opacity .5s ease}
+.emlc.emlc-js .is-active .emlc-end{transition-delay:1.6s}
+</style>
+
+<div class="emlc">
+  <div class="emlc-card" style="--i:0">
+    <div><h4>Total cholesterol</h4><div class="emlc-num">-13<small>%</small></div><p>5.71 → 4.94 mmol/L</p></div>
+    <svg viewBox="0 0 351 203" role="img" aria-label="Total cholesterol fell from 5.71 to 4.94 mmol/L">
+      <defs><linearGradient id="emlc-g1" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#C8D6EA" stop-opacity=".9"/><stop offset="1" stop-color="#C8D6EA" stop-opacity="0"/></linearGradient></defs>
+      <g class="emlc-grid" stroke="url(#emlc-g1)" stroke-width="1"><path d="M19.6 169.2v-84.5M79.2 169.2v-68.8M138.8 169.2v-58.2M199 169.2v-49.9M259.2 169.2v-43.6"/></g>
+      <path class="emlc-curve" pathLength="1" d="M19.6 81.7C150 81.7 270 84 298 102S317 122 320.2 125" fill="none" stroke="var(--emlc-line)" stroke-width="3" stroke-linecap="round"/>
+      <circle class="emlc-start" cx="19.6" cy="81.7" r="4.6" fill="#fff" stroke="var(--emlc-line)" stroke-width="2"/>
+      <circle class="emlc-end" cx="320.2" cy="125" r="4.6" fill="#fff" stroke="var(--emlc-line)" stroke-width="2"/>
+      <text class="emlc-start" x="13.8" y="44">5.71 mmol/L</text><text class="emlc-end" x="350" y="158" text-anchor="end">4.94 mmol/L</text>
+    </svg>
+  </div>
+  <div class="emlc-card" style="--i:1">
+    <div><h4>LDL cholesterol</h4><div class="emlc-num">-16<small>%</small></div><p>3.77 → 3.16 mmol/L</p></div>
+    <svg viewBox="0 0 351 203" role="img" aria-label="LDL cholesterol fell from 3.77 to 3.16 mmol/L">
+      <defs><linearGradient id="emlc-g2" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#C8D6EA" stop-opacity=".9"/><stop offset="1" stop-color="#C8D6EA" stop-opacity="0"/></linearGradient></defs>
+      <g class="emlc-grid" stroke="url(#emlc-g2)" stroke-width="1"><path d="M19.6 169.2v-79.9M79.2 169.2v-59.7M138.8 169.2v-50.6M199 169.2v-43.3M259.2 169.2v-37.8"/></g>
+      <path class="emlc-curve" pathLength="1" d="M19.6 81.7C90 86 150 104 210 120S300 140 320.2 145" fill="none" stroke="var(--emlc-line)" stroke-width="3" stroke-linecap="round"/>
+      <circle class="emlc-start" cx="19.6" cy="81.7" r="4.6" fill="#fff" stroke="var(--emlc-line)" stroke-width="2"/>
+      <circle class="emlc-end" cx="320.2" cy="145" r="4.6" fill="#fff" stroke="var(--emlc-line)" stroke-width="2"/>
+      <text class="emlc-start" x="13.8" y="44">3.77 mmol/L</text><text class="emlc-end" x="350" y="168" text-anchor="end">3.16 mmol/L</text>
+    </svg>
+  </div>
+  <div class="emlc-card" style="--i:2">
+    <div><h4>Triglycerides</h4><div class="emlc-num">-29<small>%</small></div><p>1.64 → 1.17 mmol/L</p></div>
+    <svg viewBox="0 0 351 203" role="img" aria-label="Triglycerides fell from 1.64 to 1.17 mmol/L">
+      <defs><linearGradient id="emlc-g3" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#C8D6EA" stop-opacity=".9"/><stop offset="1" stop-color="#C8D6EA" stop-opacity="0"/></linearGradient></defs>
+      <g class="emlc-grid" stroke="url(#emlc-g3)" stroke-width="1"><path d="M19.6 169.2v-100M79.2 169.2v-81.4M138.8 169.2v-68.9M199 169.2v-59M259.2 169.2v-51.5"/></g>
+      <path class="emlc-curve" pathLength="1" d="M19.6 61.7C70 72 110 100 170 116S280 134 321.2 143.7" fill="none" stroke="var(--emlc-line)" stroke-width="3" stroke-linecap="round"/>
+      <circle class="emlc-start" cx="19.6" cy="61.7" r="4.6" fill="#fff" stroke="var(--emlc-line)" stroke-width="2"/>
+      <circle class="emlc-end" cx="321.2" cy="143.7" r="4.6" fill="#fff" stroke="var(--emlc-line)" stroke-width="2"/>
+      <text class="emlc-start" x="13.8" y="40">1.64 mmol/L</text><text class="emlc-end" x="350" y="168" text-anchor="end">1.17 mmol/L</text>
+    </svg>
+  </div>
+</div>
+
+<script>
+/* Lipid cards: reveal from bottom, draw each chart when its card is half in view, shrink cards slightly as the next one stacks over them */
+(function () {
+  var ALLOWED = ['emed.com', 'emed.co.uk', 'webflow.io', 'localhost'];
+  var host = location.hostname;
+  if (host && !ALLOWED.some(function (d) { return host === d || host.slice(-d.length - 1) === '.' + d; })) {
+    return console.info('[emed lipid cards] animations off: "' + host + '" is not in the ALLOWED list');
+  }
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+
+  function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
+
+  [].forEach.call(document.querySelectorAll('.emlc:not([data-emlc-init])'), function (root) {
+    root.setAttribute('data-emlc-init', '');
+    root.classList.add('emlc-js');
+    var cards = [].slice.call(root.querySelectorAll('.emlc-card'));
+
+    var reveal = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        reveal.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -10% 0px' });
+    var draw = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-active');
+        draw.unobserve(e.target);
+      });
+    }, { threshold: 0.5 });
+    cards.forEach(function (c) { reveal.observe(c); draw.observe(c); });
+
+    var queued = false;
+    function stack() {
+      queued = false;
+      var covered = 0;
+      for (var i = cards.length - 1; i >= 0; i--) {
+        cards[i].style.scale = (1 - 0.04 * covered).toFixed(4);
+        if (i === 0) break;
+        var prev = cards[i - 1];
+        var gap = cards[i].getBoundingClientRect().top - prev.getBoundingClientRect().top;
+        covered += clamp(1 - (gap - 24) / prev.offsetHeight, 0, 1);
+      }
+    }
+    window.addEventListener('scroll', function () {
+      if (!queued) { queued = true; requestAnimationFrame(stack); }
+    }, { passive: true });
+    stack();
+  });
+})();
+</script>
+</section></body></html>
