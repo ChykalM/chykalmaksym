@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>eMed Study Page Preview</title><link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400&family=Poppins:wght@400;500&display=swap" rel="stylesheet"><style>body{margin:0;background:#ECF1F8}</style></head><body><!-- eMed GLP-1 Study page | Webflow embed | built from Figma "study page" (node 1:76)
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>eMed Study Page Preview</title><link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400&family=Poppins:wght@400;500&display=swap" rel="stylesheet"><style>body{margin:0}</style></head><body><!-- eMed GLP-1 Study page | Webflow embed | built from Figma "study page" (node 1:76)
      Everything is scoped under .emsp so it can't leak into the rest of the site.
      Before publishing, replace the image placeholders. Search for: REPLACE_ -->
 <style>
@@ -53,6 +53,7 @@
 .emsp-h3{font-size:clamp(1.75rem,1.5rem + .8vw,2.25rem)}
 .emsp-lead{font-size:1rem;line-height:1.5;text-wrap:pretty}
 .emsp-light{font-weight:200}
+.emsp-nw{white-space:nowrap}
 
 /* Buttons */
 .emsp-btn{display:inline-flex;align-items:center;justify-content:center;gap:.25rem;width:13.75rem;max-width:100%;min-height:2.875rem;padding:.5rem;border-radius:var(--emsp-radius);font-family:var(--font-body);font-weight:500;font-size:.9375rem;line-height:1;letter-spacing:-.01em;text-decoration:none;transition:background-color .2s,color .2s,border-color .2s}
@@ -75,8 +76,9 @@
 
 /* 2. Quote over portrait */
 .emsp-quote{position:relative;background:var(--emsp-navy);color:#fff;min-height:clamp(36rem,30rem + 25vw,62.7rem);display:flex;align-items:center}
-.emsp-quote__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:25% top}
-.emsp-quote::after{content:"";position:absolute;left:0;right:0;bottom:0;height:35.6%;background:linear-gradient(to bottom,rgba(0,52,107,0),var(--emsp-navy));pointer-events:none}
+.emsp-quote__media{position:absolute;inset:0}
+.emsp-quote__media img{width:100%;height:100%;object-fit:cover;object-position:25% top}
+.emsp-quote__media::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:35.6%;background:linear-gradient(to bottom,rgba(0,52,107,0),var(--emsp-navy));pointer-events:none}
 .emsp-quote .emsp-wrap{position:relative;z-index:1;display:flex;justify-content:flex-end}
 .emsp-quote figure{width:32.5rem;max-width:100%;margin-right:2.5rem}
 .emsp-quote blockquote{font-family:var(--font-display);font-size:clamp(1.5rem,1.2rem + 1vw,2rem);line-height:1.25;text-wrap:pretty}
@@ -172,14 +174,16 @@
   .emsp-options{grid-template-columns:repeat(2,1fr);row-gap:2rem}
   .emsp-options li:nth-child(3){border-left:0;padding-left:0}
   .emsp-options li:nth-child(2){padding-right:0}
+  .emsp-quote{display:block;min-height:0}
+  .emsp-quote__media{position:relative;aspect-ratio:1440/1004}
+  .emsp-quote__media::after{height:45%}
+  .emsp-quote .emsp-wrap{justify-content:flex-start;margin-top:clamp(-6rem,-8vw,-3rem);padding-bottom:1rem}
+  .emsp-quote figure{width:auto;max-width:40rem;margin-right:0}
 }
 /* Mobile landscape */
 @media (max-width:767px){
-  .emsp-quote{display:block;min-height:0;padding-top:0}
-  .emsp-quote__img{position:relative;height:auto;aspect-ratio:4/5;object-position:28% top}
-  .emsp-quote::after{top:calc(100vw * 1.25 * .55);bottom:auto;height:calc(100vw * 1.25 * .45)}
-  .emsp-quote .emsp-wrap{margin-top:-6rem;padding-bottom:1rem}
-  .emsp-quote figure{margin-right:0}
+  .emsp-outcomes{margin-top:0}
+  .emsp-chart svg text{font-size:19px}
   .emsp-metrics{grid-template-columns:1fr;gap:0}
   .emsp-metric,.emsp-metric:not(:last-child){padding:2rem .5rem}
   .emsp-metric+.emsp-metric{border-left:0;border-top:1px solid var(--emsp-line);padding-left:.5rem}
@@ -195,6 +199,8 @@
   .emsp-miles,.emsp-big{padding-inline:1.5rem}
   .emsp-count{padding-inline:1.5rem}
   .emsp-miles li{font-size:1rem}
+  .emsp-quote__media{aspect-ratio:4/5}
+  .emsp-quote__media img{object-position:28% top}
 }
 /* Scroll animations: only active once the script adds .emsp-js, so content stays visible without JS and in the Webflow Designer */
 .emsp-js [data-reveal]{opacity:0;translate:0 2.5rem;transition:opacity .9s var(--emsp-ease),translate .9s var(--emsp-ease);transition-delay:var(--d,0s)}
@@ -219,7 +225,7 @@ html.lenis,html.lenis body{height:auto}
     <div class="emsp-hero__texture" aria-hidden="true"></div>
     <div class="emsp-wrap">
       <p class="emsp-eyebrow" data-reveal>New UCL-led research, published in Nature Medicine</p>
-      <h1 class="emsp-display emsp-h1" data-reveal style="--d:.1s">Real-world results from eMed's GLP-1 program</h1>
+      <h1 class="emsp-display emsp-h1" data-reveal style="--d:.1s">Real-world results from eMed's <span class="emsp-nw">GLP-1</span> program</h1>
       <p class="emsp-lead" data-reveal style="--d:.2s">One of the largest real-world evaluations of GLP-1 therapy ever published: 8,127 women followed over six months.</p>
       <p class="emsp-lead" data-reveal style="--d:.25s">Independently analyzed by University College London. Delivered through eMed's digital care program.</p>
       <div class="emsp-btns" data-reveal style="--d:.35s">
@@ -231,10 +237,10 @@ html.lenis,html.lenis body{height:auto}
 
   <!-- 2. Quote -->
   <section class="emsp-quote">
-    <img class="emsp-quote__img" src="professor-deanfield.webp" alt="Professor John Deanfield" loading="lazy" width="1440" height="1004">
+    <div class="emsp-quote__media"><img src="professor-deanfield.webp" alt="Professor John Deanfield" loading="lazy" width="1440" height="1004"></div>
     <div class="emsp-wrap">
       <figure data-reveal>
-        <blockquote>“This study provides some of the most comprehensive real-world evidence to date on GLP-1 treatment in women. What's particularly striking is the consistency of outcomes across a large and diverse population.”</blockquote>
+        <blockquote>“This study provides some of the most comprehensive real-world evidence to date on <span class="emsp-nw">GLP-1</span> treatment in women. What's particularly striking is the consistency of outcomes across a large and diverse population.”</blockquote>
         <figcaption>Professor John Deanfield<span>Institute of Cardiovascular Science, University College London</span></figcaption>
       </figure>
     </div>
@@ -322,7 +328,7 @@ html.lenis,html.lenis body{height:auto}
               <path d="M19.6 81.7C150 81.7 270 84 298 102S317 122 320.2 125" fill="none" stroke="var(--emsp-chart)" stroke-width="3" stroke-linecap="round"/>
               <circle cx="19.6" cy="81.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
               <circle cx="320.2" cy="125" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
-              <text x="13.8" y="44">5.71 mmol/L</text><text x="263" y="158">4.94 mmol/L</text>
+              <text x="13.8" y="44">5.71 mmol/L</text><text x="350" y="158" text-anchor="end">4.94 mmol/L</text>
             </svg>
           </div>
           <div class="emsp-chart" data-reveal style="--i:1">
@@ -333,7 +339,7 @@ html.lenis,html.lenis body{height:auto}
               <path d="M19.6 81.7C90 86 150 104 210 120S300 140 320.2 145" fill="none" stroke="var(--emsp-chart)" stroke-width="3" stroke-linecap="round"/>
               <circle cx="19.6" cy="81.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
               <circle cx="320.2" cy="145" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
-              <text x="13.8" y="44">3.77 mmol/L</text><text x="263" y="168">3.16 mmol/L</text>
+              <text x="13.8" y="44">3.77 mmol/L</text><text x="350" y="168" text-anchor="end">3.16 mmol/L</text>
             </svg>
           </div>
           <div class="emsp-chart" data-reveal style="--i:2">
@@ -344,7 +350,7 @@ html.lenis,html.lenis body{height:auto}
               <path d="M19.6 61.7C70 72 110 100 170 116S280 134 321.2 143.7" fill="none" stroke="var(--emsp-chart)" stroke-width="3" stroke-linecap="round"/>
               <circle cx="19.6" cy="61.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
               <circle cx="321.2" cy="143.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
-              <text x="13.8" y="40">1.64 mmol/L</text><text x="263" y="168">1.17 mmol/L</text>
+              <text x="13.8" y="40">1.64 mmol/L</text><text x="350" y="168" text-anchor="end">1.17 mmol/L</text>
             </svg>
           </div>
         </div>
