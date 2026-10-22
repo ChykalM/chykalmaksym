@@ -1,0 +1,378 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>eMed Study Page Preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400&family=Poppins:wght@400;500&display=swap" rel="stylesheet"><style>body{margin:0;background:#ECF1F8}</style></head><body><!-- eMed GLP-1 Study page | Webflow embed | built from Figma "study page" (node 1:76)
+     Everything is scoped under .emsp so it can't leak into the rest of the site.
+     Before publishing, replace the image placeholders. Search for: REPLACE_ -->
+<style>
+.emsp{
+  /* eMed tokens (style guide section 8) */
+  --brand-500:#057FFF;
+  --brand-700:color-mix(in oklch,#057FFF,black 30%);
+  --text:oklch(0.0613 0.0212 256.518);
+  --font-display:"PP Editorial New","Frankruhllibre","Frank Ruhl Libre","Times New Roman",serif;
+  --font-body:"Poppins",Arial,sans-serif;
+  /* Page-specific values taken from the Figma design */
+  --emsp-bg:#ECF1F8;
+  --emsp-navy:#00346B;
+  --emsp-eyebrow:#66748B;
+  --emsp-line:#C8D6EA;
+  --emsp-chart:#1D6BD0;
+  --emsp-card-dark:rgba(255,255,255,.1);
+  --emsp-radius:8px;
+  --emsp-wide:77.5rem;   /* 1240px */
+  --emsp-main:75rem;     /* 1200px */
+  --emsp-text:49.5rem;   /* 792px */
+  --emsp-gutter:clamp(1rem,0.5rem + 1.5vw,3rem);
+
+  background:var(--emsp-bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:1rem;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+.emsp *,.emsp *::before,.emsp *::after{box-sizing:border-box}
+.emsp :where(h1,h2,h3,h4,p,ul,ol,li,figure,blockquote){margin:0;padding:0}
+.emsp :where(ul,ol){list-style:none}
+.emsp img{display:block;max-width:100%}
+.emsp ::selection{background:color-mix(in oklch,#057FFF,white 61%)}
+
+/* Layout */
+.emsp-wrap{width:min(100% - 2*var(--emsp-gutter),var(--emsp-wide));margin-inline:auto}
+.emsp-wrap--main{width:min(100% - 2*var(--emsp-gutter),var(--emsp-main))}
+.emsp-center{text-align:center;max-width:var(--emsp-text);margin-inline:auto}
+
+/* Type */
+.emsp-eyebrow{font-family:var(--font-body);font-size:.875rem;line-height:1.4;text-transform:uppercase;letter-spacing:.01em;color:var(--emsp-eyebrow)}
+.emsp-eyebrow--muted{color:var(--text);opacity:.5}
+.emsp-display{font-family:var(--font-display);font-weight:400;line-height:1.15;letter-spacing:-.01em;text-wrap:balance}
+.emsp-h1{font-size:clamp(2.5rem,1.6rem + 3vw,4.5rem)}
+.emsp-h2{font-size:clamp(2.25rem,1.6rem + 2.2vw,3.5rem)}
+.emsp-h2--sm{font-size:clamp(2rem,1.6rem + 1.2vw,2.75rem)}
+.emsp-h3{font-size:clamp(1.75rem,1.5rem + .8vw,2.25rem)}
+.emsp-lead{font-size:1rem;line-height:1.5;text-wrap:pretty}
+.emsp-light{font-weight:200}
+
+/* Buttons */
+.emsp-btn{display:inline-flex;align-items:center;justify-content:center;gap:.25rem;width:13.75rem;max-width:100%;min-height:2.875rem;padding:.5rem;border-radius:var(--emsp-radius);font-family:var(--font-body);font-weight:500;font-size:.9375rem;line-height:1;letter-spacing:-.01em;text-decoration:none;transition:background-color .2s,color .2s,border-color .2s}
+.emsp-btn--outline{border:1.5px solid var(--text);color:var(--text);background:transparent}
+.emsp-btn--outline:hover{background:var(--brand-700);border-color:var(--brand-700);color:#fff}
+.emsp-btn--primary{background:var(--brand-500);color:#fff;border:1.5px solid var(--brand-500)}
+.emsp-btn--primary:hover{background:var(--brand-700);border-color:var(--brand-700)}
+.emsp-btn:focus-visible{outline:.125rem solid var(--brand-500);outline-offset:.1875rem}
+.emsp-btn svg{width:1rem;height:1rem;flex:none}
+.emsp-btns{display:flex;flex-direction:column;align-items:flex-start;gap:.75rem}
+
+/* 1. Hero */
+.emsp-hero{position:relative;padding:clamp(7rem,5rem + 6vw,12.8rem) 0 clamp(5rem,4rem + 4vw,10.7rem)}
+.emsp-hero__texture{position:absolute;inset:0;background:var(--emsp-hero-texture,none) right center/cover no-repeat;opacity:.4;pointer-events:none}
+.emsp-hero .emsp-wrap{position:relative}
+.emsp-hero .emsp-h1{max-width:53.5rem;margin-top:2.1rem}
+.emsp-hero .emsp-lead{max-width:32.5rem;margin-top:1.4rem}
+.emsp-hero .emsp-lead+.emsp-lead{margin-top:1.5rem}
+.emsp-hero .emsp-btns{margin-top:3rem}
+
+/* 2. Quote over portrait */
+.emsp-quote{position:relative;background:var(--emsp-navy);color:#fff;min-height:clamp(36rem,30rem + 25vw,62.7rem);display:flex;align-items:center}
+.emsp-quote__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right top}
+.emsp-quote::after{content:"";position:absolute;left:0;right:0;bottom:0;height:35.6%;background:linear-gradient(to bottom,rgba(0,52,107,0),var(--emsp-navy));pointer-events:none}
+.emsp-quote .emsp-wrap{position:relative;z-index:1;display:flex;justify-content:flex-end}
+.emsp-quote figure{width:32.5rem;max-width:100%;margin-right:2.5rem}
+.emsp-quote blockquote{font-family:var(--font-display);font-size:clamp(1.5rem,1.2rem + 1vw,2rem);line-height:1.25;text-wrap:pretty}
+.emsp-quote figcaption{margin-top:3rem;font-size:1rem}
+.emsp-quote figcaption span{display:block;font-size:.875rem;opacity:.6}
+
+/* 3. Navy results */
+.emsp-results{background:var(--emsp-navy);color:#fff;padding:clamp(5rem,3.5rem + 5vw,13.6rem) 0 clamp(5rem,3.5rem + 4vw,9rem)}
+.emsp-results .emsp-lead{margin-top:1.5rem}
+.emsp-row{display:grid;grid-template-columns:484fr 686fr;gap:1.9rem;margin-top:clamp(3rem,2rem + 3vw,4.7rem)}
+.emsp-card{background:var(--emsp-card-dark);border-radius:var(--emsp-radius)}
+.emsp-big{display:flex;flex-direction:column;justify-content:space-between;gap:3rem;min-height:30rem;padding:5.9rem 1.9rem 3.1rem}
+.emsp-big__num{display:flex;align-items:flex-end;font-family:var(--font-display);font-weight:200;font-size:clamp(5rem,3.5rem + 4vw,7.875rem);line-height:.8;letter-spacing:-.02em}
+.emsp-big__num small{font-family:var(--font-body);font-weight:500;font-size:clamp(1.75rem,1.4rem + 1vw,2.625rem);line-height:1;letter-spacing:-.02em;margin-left:.6rem}
+.emsp-big p,.emsp-miles h3{font-weight:500;font-size:clamp(1.375rem,1.1rem + .8vw,1.75rem);line-height:1.4;letter-spacing:-.01em}
+.emsp-miles{padding:3.4rem 2.75rem 2.75rem 2.6rem}
+.emsp-miles__sub{font-weight:500;font-size:1rem;line-height:1.4;letter-spacing:-.01em;margin-top:.15rem}
+.emsp-miles ul{display:flex;flex-direction:column;gap:2.9rem;margin-top:3.1rem}
+.emsp-miles li{display:grid;grid-template-columns:1fr auto;row-gap:.95rem;font-size:1.125rem;line-height:1.33}
+.emsp-bar{grid-column:1/-1;height:.875rem;padding:.156rem .27rem;border-radius:var(--emsp-radius);background:var(--emsp-card-dark)}
+.emsp-bar span{display:block;height:100%;width:var(--p);border-radius:var(--emsp-radius);background:#fff}
+.emsp-results .emsp-h3{margin-top:clamp(5rem,4rem + 3vw,8.5rem);text-align:center}
+.emsp-women{display:grid;grid-template-columns:484px 380px;justify-content:center;column-gap:4.9rem;margin-top:3.5rem}
+.emsp-count{display:flex;flex-direction:column;padding:5.2rem 2.9rem 4.6rem 3.6rem}
+.emsp-count>div{display:flex;flex-direction:column;gap:2.3rem}
+.emsp-count hr{border:0;border-top:1px solid rgba(255,255,255,.4);margin:4.1rem 0 7.2rem;width:100%}
+.emsp-count strong{font-family:var(--font-display);font-weight:400;font-size:clamp(4rem,3rem + 3vw,5.375rem);line-height:.75;letter-spacing:-.02em}
+.emsp-count span{font-weight:500;font-size:1.25rem;line-height:1.4;letter-spacing:-.01em;max-width:20rem}
+.emsp-demo{display:flex;flex-direction:column;gap:2.5rem}
+.emsp-demo li{display:flex;flex-direction:column;gap:1.25rem;padding:2.5rem .5rem .5rem}
+.emsp-demo li+li{border-top:1px solid rgba(255,255,255,.8)}
+.emsp-demo .emsp-eyebrow{color:#fff}
+.emsp-demo strong{font-family:var(--font-display);font-weight:400;font-size:clamp(2.75rem,2.2rem + 1.6vw,3.5rem);line-height:1.14;letter-spacing:-.02em}
+.emsp-demo span{opacity:.6;max-width:20rem}
+.emsp-cite{margin-top:clamp(4rem,3rem + 3vw,8.4rem);font-weight:500;font-size:.75rem;line-height:1.4;letter-spacing:-.01em;opacity:.6}
+
+/* 4. Outcomes */
+.emsp-outcomes{padding:clamp(5rem,4rem + 4vw,9.3rem) 0 clamp(5rem,4rem + 4vw,12.4rem);margin-top:3.2rem}
+.emsp-outcomes .emsp-center>*+*{margin-top:1.5rem}
+.emsp-metrics{display:grid;grid-template-columns:repeat(3,1fr);margin-top:4rem}
+.emsp-metric{padding:.5rem;display:flex;flex-direction:column;gap:2.5rem}
+.emsp-metric+.emsp-metric{border-left:1px solid var(--emsp-line);padding-left:2.5rem}
+.emsp-metric:not(:last-child){padding-right:2.5rem}
+.emsp-num{font-family:var(--font-display);font-weight:200;font-size:clamp(3.5rem,2.8rem + 2vw,4.5rem);line-height:1;letter-spacing:-.02em}
+.emsp-num small{font-size:.72em}
+.emsp-metric h3{font-weight:500;font-size:1.125rem;line-height:1.33}
+.emsp-metric p{font-size:.875rem;line-height:1.7;margin-top:.5rem}
+.emsp-lipids{margin-top:clamp(5rem,4rem + 3vw,9.5rem)}
+.emsp-lipids .emsp-h3{margin-top:1.5rem}
+.emsp-lipids .emsp-lead{margin-top:.875rem}
+.emsp-charts{display:flex;flex-direction:column;gap:1.5rem;max-width:45rem;margin:3rem auto 0}
+.emsp-chart{display:grid;grid-template-columns:46.3% 1fr;align-items:center;min-height:15.66rem;padding:1.5rem 2.2rem 1.5rem 2.7rem;background:rgba(255,255,255,.5);border:1px solid rgba(200,214,234,.5);border-radius:10px;color:#000C1A}
+.emsp-chart h4{font-weight:500;font-size:1.5rem;line-height:1.4;letter-spacing:-.03em}
+.emsp-chart .emsp-num{margin-top:1.4rem}
+.emsp-chart p{font-size:.875rem;line-height:1.4;letter-spacing:-.03em;opacity:.6;margin-top:.1rem}
+.emsp-chart svg{width:100%;height:auto;overflow:visible}
+.emsp-chart svg text{font-family:var(--font-body);font-size:14px;letter-spacing:-.42px;fill:#000C1A;fill-opacity:.6}
+
+/* 5. Key takeaways */
+.emsp-takeaways{padding:clamp(4rem,3rem + 3vw,9.1rem) 0 clamp(4rem,3rem + 3vw,9.2rem);display:block}
+.emsp-takeaways .emsp-wrap{display:grid;grid-template-columns:22rem minmax(0,41.9rem);justify-content:space-between;column-gap:3rem;align-items:start}
+.emsp-takeaways .emsp-lead{margin-top:.75rem;font-size:1rem}
+.emsp-takeaways .emsp-btns{margin-top:2.25rem;gap:1rem}
+.emsp-list{border-top:1px solid var(--emsp-line);margin-top:.65rem}
+.emsp-list li{display:grid;grid-template-columns:1.5rem 1fr;column-gap:3.6rem;padding:2.5rem 0;border-bottom:1px solid var(--emsp-line)}
+.emsp-list li:last-child{border-bottom:0;padding-bottom:0}
+.emsp-dot{display:grid;place-items:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--brand-500);color:#fff;font-size:1rem;line-height:1}
+.emsp-list h3{font-weight:500;font-size:1.25rem;line-height:1.5;color:#000}
+.emsp-list p{margin-top:.5rem;color:#000}
+
+/* 6. Contact */
+.emsp-contact{background:linear-gradient(to bottom,var(--emsp-bg),#fff);padding:clamp(4rem,3rem + 3vw,7.1rem) 0}
+.emsp-contact .emsp-lead{margin-top:1rem}
+.emsp-options{display:grid;grid-template-columns:repeat(4,1fr);margin-top:4rem}
+.emsp-options li{display:flex;flex-direction:column;gap:.75rem;padding-inline:1.45rem;min-height:7.75rem;color:#000}
+.emsp-options li:first-child{padding-left:0}
+.emsp-options li:last-child{padding-right:0}
+.emsp-options li+li{border-left:1px solid var(--emsp-line)}
+.emsp-options h3{font-weight:500;font-size:1rem;letter-spacing:-.01em;line-height:1.5}
+.emsp-options p{font-size:.875rem;letter-spacing:-.01em;opacity:.6;line-height:1.5}
+.emsp-contact__cta{display:flex;justify-content:center;margin-top:4rem}
+
+/* Tablet */
+@media (max-width:991px){
+  .emsp-row,.emsp-women,.emsp-takeaways .emsp-wrap{grid-template-columns:1fr}
+  .emsp-row{gap:1.5rem}
+  .emsp-women{row-gap:1.5rem;max-width:30.25rem;margin-inline:auto}
+  .emsp-big{min-height:0;padding-top:3.5rem}
+  .emsp-count{padding:3.5rem 2.5rem}
+  .emsp-count hr{margin:3rem 0}
+  .emsp-takeaways .emsp-wrap{row-gap:3rem}
+  .emsp-options{grid-template-columns:repeat(2,1fr);row-gap:2rem}
+  .emsp-options li:nth-child(3){border-left:0;padding-left:0}
+  .emsp-options li:nth-child(2){padding-right:0}
+}
+/* Mobile landscape */
+@media (max-width:767px){
+  .emsp-quote{display:block;min-height:0;padding-top:0}
+  .emsp-quote__img{position:relative;height:auto;aspect-ratio:4/5;object-position:72% top}
+  .emsp-quote::after{top:calc(100vw * 1.25 * .55);bottom:auto;height:calc(100vw * 1.25 * .45)}
+  .emsp-quote .emsp-wrap{margin-top:-6rem;padding-bottom:1rem}
+  .emsp-quote figure{margin-right:0}
+  .emsp-metrics{grid-template-columns:1fr;gap:0}
+  .emsp-metric,.emsp-metric:not(:last-child){padding:2rem .5rem}
+  .emsp-metric+.emsp-metric{border-left:0;border-top:1px solid var(--emsp-line);padding-left:.5rem}
+  .emsp-chart{grid-template-columns:1fr;row-gap:1.5rem;padding:1.75rem 1.5rem}
+  .emsp-list li{column-gap:1.25rem}
+  .emsp-options{grid-template-columns:1fr}
+  .emsp-options li,.emsp-options li:first-child,.emsp-options li:last-child,.emsp-options li:nth-child(2),.emsp-options li:nth-child(3){padding:1.5rem 0 0;border-left:0;min-height:0}
+  .emsp-options li+li{border-top:1px solid var(--emsp-line)}
+  .emsp-btn{min-height:3rem}
+}
+/* Mobile portrait */
+@media (max-width:479px){
+  .emsp-miles,.emsp-big{padding-inline:1.5rem}
+  .emsp-count{padding-inline:1.5rem}
+  .emsp-miles li{font-size:1rem}
+}
+@media (prefers-reduced-motion:reduce){.emsp *{transition:none!important}}
+</style>
+
+<div class="emsp" style="--emsp-hero-texture:url('REPLACE_HERO_TEXTURE_URL')">
+
+  <!-- 1. Hero -->
+  <section class="emsp-hero">
+    <div class="emsp-hero__texture" aria-hidden="true"></div>
+    <div class="emsp-wrap">
+      <p class="emsp-eyebrow">New UCL-led research, published in Nature Medicine</p>
+      <h1 class="emsp-display emsp-h1">Real-world results from eMed's GLP-1 program</h1>
+      <p class="emsp-lead">One of the largest real-world evaluations of GLP-1 therapy ever published: 8,127 women followed over six months.</p>
+      <p class="emsp-lead">Independently analyzed by University College London. Delivered through eMed's digital care program.</p>
+      <div class="emsp-btns">
+        <a class="emsp-btn emsp-btn--outline" href="#emsp-results">See the results</a>
+        <a class="emsp-btn emsp-btn--outline" href="#emsp-contact">Speak to our team</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Quote -->
+  <section class="emsp-quote">
+    <img class="emsp-quote__img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" style="background:linear-gradient(120deg,#2a2622,#0c0b0d 60%)" alt="Professor John Deanfield" loading="lazy" width="1440" height="1003">
+    <div class="emsp-wrap">
+      <figure>
+        <blockquote>“This study provides some of the most comprehensive real-world evidence to date on GLP-1 treatment in women. What's particularly striking is the consistency of outcomes across a large and diverse population.”</blockquote>
+        <figcaption>Professor John Deanfield<span>Institute of Cardiovascular Science, University College London</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 3. Results (navy) -->
+  <section class="emsp-results" id="emsp-results">
+    <div class="emsp-wrap emsp-wrap--main">
+      <div class="emsp-center">
+        <h2 class="emsp-display emsp-h2">eMed Transforms Women's Health, at Scale. Outcomes Built to Last.</h2>
+        <p class="emsp-lead">The Nature Study tracked results over 6 months, with over 91% of the members staying on the treatment.</p>
+      </div>
+
+      <div class="emsp-row">
+        <div class="emsp-card emsp-big">
+          <div class="emsp-big__num">99.3<small>%</small></div>
+          <p>Of members lost weight</p>
+        </div>
+        <div class="emsp-card emsp-miles">
+          <h3>Weight-loss milestone at 6 months</h3>
+          <p class="emsp-miles__sub">(% of participants reaching each threshold)</p>
+          <ul>
+            <li><span>Lost weight</span><span>99.3%</span><div class="emsp-bar" aria-hidden="true"><span style="--p:99.3%"></span></div></li>
+            <li><span>Lost at least 5%</span><span>96.1%</span><div class="emsp-bar" aria-hidden="true"><span style="--p:96.1%"></span></div></li>
+            <li><span>Lost at least 10%</span><span>83.1%</span><div class="emsp-bar" aria-hidden="true"><span style="--p:83.1%"></span></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <h2 class="emsp-display emsp-h3">A closer look at the women in the study</h2>
+      <div class="emsp-women">
+        <div class="emsp-card emsp-count">
+          <div><strong>8,127</strong><span>Women treated by eMed clinicians</span></div>
+          <hr>
+          <div><strong>0</strong><span>Serious Treatment Related side effects</span></div>
+        </div>
+        <ul class="emsp-demo">
+          <li><span class="emsp-eyebrow">Ages</span><strong>18-79</strong><span>Diverse socioeconomic backgrounds</span></li>
+          <li><span class="emsp-eyebrow">BMI</span><strong>38.2</strong><span>Avg baseline, Obesity class II</span></li>
+          <li><strong>Real-world</strong><span>Pre- and post-menopausal women</span></li>
+        </ul>
+      </div>
+
+      <p class="emsp-cite">Deanfield J, et al. Real-world, digital-first delivery of GLP-1 receptor agonist therapy in women. Nature Medicine (2026). doi:10.1038/s41591-026-04687-x. UK observational cohort of adult women (n = 8,127; 99.8% tirzepatide; self-pay; no comparator group). Clinical care provided by eMed Healthcare UK. Weight outcomes among participants with 6-month data (n = 7,297); HbA1c among those with paired labs. UK results; U.S. outcomes may differ.</p>
+    </div>
+  </section>
+
+  <!-- 4. Outcomes -->
+  <section class="emsp-outcomes">
+    <div class="emsp-wrap emsp-wrap--main">
+      <div class="emsp-center">
+        <p class="emsp-eyebrow emsp-eyebrow--muted">eMed Transforms Women's Health, at Scale.</p>
+        <h2 class="emsp-display emsp-h2">Outcomes Built to Last</h2>
+        <p class="emsp-lead">The Nature Study tracked results over 6 months, with over 91% of the members staying on the treatment.</p>
+      </div>
+
+      <div class="emsp-metrics">
+        <div class="emsp-metric">
+          <div class="emsp-num">-35<small>lbs</small></div>
+          <div><h3>Average Weight Loss at 6 Months</h3><p>15.5% average weight reduction achieved at 6 months of treatment.</p></div>
+        </div>
+        <div class="emsp-metric">
+          <div class="emsp-num">91.4<small>%</small></div>
+          <div><h3>Still on Treatment at 6 Months</h3><p>High program retention across all demographics.</p></div>
+        </div>
+        <div class="emsp-metric">
+          <div class="emsp-num">96.3<small>%</small></div>
+          <div><h3>Normalized Prediabetes (HbA1c)</h3><p>Significant clinical reversal of prediabetes marker among participants with paired lab data.</p></div>
+        </div>
+      </div>
+
+      <div class="emsp-lipids">
+        <div class="emsp-center">
+          <p class="emsp-eyebrow emsp-eyebrow--muted">Cardiovascular risk</p>
+          <h2 class="emsp-display emsp-h3">Lipid Marker Reductions</h2>
+          <p class="emsp-lead">Significant clinical improvements across all 3 markers.</p>
+        </div>
+
+        <div class="emsp-charts">
+          <div class="emsp-chart">
+            <div><h4>Total cholesterol</h4><div class="emsp-num">-13<small>%</small></div><p>5.71 → 4.94 mmol/L</p></div>
+            <svg viewBox="0 0 351 203" role="img" aria-label="Total cholesterol fell from 5.71 to 4.94 mmol/L">
+              <defs><linearGradient id="emsp-g1" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#C8D6EA" stop-opacity=".9"/><stop offset="1" stop-color="#C8D6EA" stop-opacity="0"/></linearGradient></defs>
+              <g stroke="url(#emsp-g1)" stroke-width="1"><path d="M19.6 169.2v-84.5M79.2 169.2v-68.8M138.8 169.2v-58.2M199 169.2v-49.9M259.2 169.2v-43.6"/></g>
+              <path d="M19.6 81.7C150 81.7 270 84 298 102S317 122 320.2 125" fill="none" stroke="var(--emsp-chart)" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="19.6" cy="81.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
+              <circle cx="320.2" cy="125" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
+              <text x="13.8" y="44">5.71 mmol/L</text><text x="263" y="158">4.94 mmol/L</text>
+            </svg>
+          </div>
+          <div class="emsp-chart">
+            <div><h4>LDL cholesterol</h4><div class="emsp-num">-16<small>%</small></div><p>3.77 → 3.16 mmol/L</p></div>
+            <svg viewBox="0 0 351 203" role="img" aria-label="LDL cholesterol fell from 3.77 to 3.16 mmol/L">
+              <defs><linearGradient id="emsp-g2" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#C8D6EA" stop-opacity=".9"/><stop offset="1" stop-color="#C8D6EA" stop-opacity="0"/></linearGradient></defs>
+              <g stroke="url(#emsp-g2)" stroke-width="1"><path d="M19.6 169.2v-79.9M79.2 169.2v-59.7M138.8 169.2v-50.6M199 169.2v-43.3M259.2 169.2v-37.8"/></g>
+              <path d="M19.6 81.7C90 86 150 104 210 120S300 140 320.2 145" fill="none" stroke="var(--emsp-chart)" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="19.6" cy="81.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
+              <circle cx="320.2" cy="145" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
+              <text x="13.8" y="44">3.77 mmol/L</text><text x="263" y="168">3.16 mmol/L</text>
+            </svg>
+          </div>
+          <div class="emsp-chart">
+            <div><h4>Triglycerides</h4><div class="emsp-num">-29<small>%</small></div><p>1.64 → 1.17 mmol/L</p></div>
+            <svg viewBox="0 0 351 203" role="img" aria-label="Triglycerides fell from 1.64 to 1.17 mmol/L">
+              <defs><linearGradient id="emsp-g3" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#C8D6EA" stop-opacity=".9"/><stop offset="1" stop-color="#C8D6EA" stop-opacity="0"/></linearGradient></defs>
+              <g stroke="url(#emsp-g3)" stroke-width="1"><path d="M19.6 169.2v-100M79.2 169.2v-81.4M138.8 169.2v-68.9M199 169.2v-59M259.2 169.2v-51.5"/></g>
+              <path d="M19.6 61.7C70 72 110 100 170 116S280 134 321.2 143.7" fill="none" stroke="var(--emsp-chart)" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="19.6" cy="61.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
+              <circle cx="321.2" cy="143.7" r="4.6" fill="#fff" stroke="var(--emsp-chart)" stroke-width="2"/>
+              <text x="13.8" y="40">1.64 mmol/L</text><text x="263" y="168">1.17 mmol/L</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Key takeaways -->
+  <section class="emsp-takeaways">
+    <div class="emsp-wrap">
+      <div>
+        <h2 class="emsp-display emsp-h2--sm">Key takeaways</h2>
+        <p class="emsp-lead">Outcomes measured from day one, across every client population.</p>
+        <div class="emsp-btns">
+          <a class="emsp-btn emsp-btn--outline" href="#emsp-contact">Talk to a benefits expert <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg></a>
+          <a class="emsp-btn emsp-btn--outline" href="REPLACE_PROGRAM_URL">See full program <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg></a>
+        </div>
+      </div>
+      <ol class="emsp-list">
+        <li><span class="emsp-dot">1</span><div><h3>Peer-reviewed and independently analyzed.</h3><p>Published in Nature Medicine. The study was led and analyzed independently by University College London.</p></div></li>
+        <li><span class="emsp-dot">2</span><div><h3>Vast majority of participants stayed on the treatment.</h3><p>91.4% were still on treatment at six months. Discontinuation was lower among those using structured side-effect support (5.0% vs 7.4%).</p></div></li>
+        <li><span class="emsp-dot">3</span><div><h3>Results were achieved below the maximum dose.</h3><p>Average dose exposure across the study sat at around 63% of the maximum licensed dose, and weight loss over six months was comparable to the trajectories reported in the major clinical trials of these treatments.</p></div></li>
+        <li><span class="emsp-dot">4</span><div><h3>Blood sugar and cholesterol improved alongside weight.</h3><p>84.5% of those in the diabetes range and 96.3% of those with prediabetes returned to normal blood sugar. Average total cholesterol moved into the healthy range.</p></div></li>
+        <li><span class="emsp-dot">5</span><div><h3>Outcomes were consistent across the population.</h3><p>No significant difference in weight loss by deprivation level, and results held at every age from 18 to 79. There were no serious treatment-related adverse events.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 6. Contact -->
+  <section class="emsp-contact" id="emsp-contact">
+    <div class="emsp-wrap emsp-wrap--main">
+      <div class="emsp-center">
+        <h2 class="emsp-display emsp-h2">Contact our team</h2>
+        <p class="emsp-lead">We can guide your reward, benefits or clinical governance team through the published findings, the reporting you would receive and how the program could be delivered to your employees.</p>
+      </div>
+      <ul class="emsp-options">
+        <li><h3>Book a call</h3><p>A 30-minute conversation with our clinical and commercial leads.</p></li>
+        <li><h3>Understand the results</h3><p>Further explanations can be provided upon request via email, or with a meeting.</p></li>
+        <li><h3>Employer benefits</h3><p>Please reach out if you'd like to understand how GLP-1 weight loss programmes can be offered as an employee benefit.</p></li>
+        <li><h3>Run a pilot</h3><p>A defined cohort with an agreed measurement framework set at baseline.</p></li>
+      </ul>
+      <div class="emsp-contact__cta"><a class="emsp-btn emsp-btn--primary" href="REPLACE_CONTACT_URL">Contact our team</a></div>
+    </div>
+  </section>
+
+</div>
+</body></html>
