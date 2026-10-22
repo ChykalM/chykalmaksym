@@ -174,10 +174,11 @@
   .emsp-options{grid-template-columns:repeat(2,1fr);row-gap:2rem}
   .emsp-options li:nth-child(3){border-left:0;padding-left:0}
   .emsp-options li:nth-child(2){padding-right:0}
-  .emsp-quote{display:block;min-height:0}
-  .emsp-quote__media{position:relative;aspect-ratio:1440/1004}
-  .emsp-quote__media::after{height:45%}
-  .emsp-quote .emsp-wrap{justify-content:flex-start;margin-top:clamp(-6rem,-8vw,-3rem);padding-bottom:1rem}
+  /* Photo stays the background; the quote moves to the bottom, over a taller fade */
+  .emsp-quote{align-items:flex-end;min-height:max(40rem,125vw);padding-bottom:3rem}
+  .emsp-quote__media img{object-position:28% top}
+  .emsp-quote__media::after{height:65%}
+  .emsp-quote .emsp-wrap{justify-content:flex-start}
   .emsp-quote figure{width:auto;max-width:40rem;margin-right:0}
 }
 /* Mobile landscape */
@@ -199,8 +200,6 @@
   .emsp-miles,.emsp-big{padding-inline:1.5rem}
   .emsp-count{padding-inline:1.5rem}
   .emsp-miles li{font-size:1rem}
-  .emsp-quote__media{aspect-ratio:4/5}
-  .emsp-quote__media img{object-position:28% top}
 }
 /* Scroll animations: only active once the script adds .emsp-js, so content stays visible without JS and in the Webflow Designer */
 .emsp-js [data-reveal]{opacity:0;translate:0 2.5rem;transition:opacity .9s var(--emsp-ease),translate .9s var(--emsp-ease);transition-delay:var(--d,0s)}
