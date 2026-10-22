@@ -1,0 +1,56 @@
+<!-- gsap counter | Page Settings > Custom Code > Inside <head> tag (or Before </body> tag)
+     Counts up every element with a data-count attribute when it reaches 80% down the screen.
+     data-count="99.3"  -> counts to that value      data-count (empty)  -> counts to the number already in the text
+     Only the number itself is animated, so text and child elements around it (%, lbs, <small>) are kept.
+     Handles + / - signs, decimals (12.50 keeps 2 places) and thousands commas (8,127). -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (!window.gsap || !window.ScrollTrigger) return console.warn("[gsap counter] GSAP or ScrollTrigger didn't load");
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.querySelectorAll("[data-count]").forEach(function (counter) {
+        // Find the text node that holds the number, so everything around it stays untouched
+        var walker = document.createTreeWalker(counter, NodeFilter.SHOW_TEXT);
+        var node;
+        while ((node = walker.nextNode()) && !/\d/.test(node.nodeValue)) {}
+        if (!node) return console.warn("[gsap counter] no number in the text of", counter);
+
+        var text = node.nodeValue;
+        var match = text.match(/[+-]?\d[\d,]*(\.\d+)?/);
+        var rawValue = (counter.getAttribute("data-count") || "").trim() || match[0];
+        var prefix = (rawValue.startsWith("+") || rawValue.startsWith("-")) ? rawValue[0] : "";
+        var digits = rawValue.replace(/[^\d.]/g, "");
+        var endValue = parseFloat(digits);
+        if (isNaN(endValue)) return console.warn('[gsap counter] data-count="' + rawValue + '" is not a number', counter);
+        var decimals = (digits.split(".")[1] || "").length;
+        var commas = /\d,\d/.test(rawValue) || /\d,\d/.test(match[0]);
+        var before = text.slice(0, match.index);
+        var after = text.slice(match.index + match[0].length);
+
+        function render(value) {
+            var s = value.toFixed(decimals);
+            if (commas) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            node.nodeValue = before + prefix + s + after;
+        }
+
+        var state = { value: 0 };
+        render(0);
+        gsap.to(state, {
+            value: endValue,
+            duration: 2,
+            ease: "power1.out",
+            onUpdate: function () { render(state.value); },
+            onComplete: function () { render(endValue); },
+            scrollTrigger: {
+                trigger: counter,
+                start: "top 80%",
+                once: true
+            }
+        });
+    });
+});
+</script>
