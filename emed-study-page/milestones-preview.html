@@ -1,11 +1,14 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Milestones Card Preview</title><link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400&family=Poppins:wght@400;500&display=swap" rel="stylesheet"><style>body{margin:0}section{background:#061A40 url(professor-deanfield.webp) left center/cover;padding:120vh 16px 40vh}.wrap{max-width:760px;margin:0 auto}</style></head><body><section><div class="wrap"><!-- eMed | Weight-loss milestones card (light) | standalone Webflow Code Embed
      Light, semi-transparent card for use over a photo or dark section. Fills the width of its parent.
-     To change a value, edit the number and its --p width together. Bar colours: --emwl-bar-1/2/3 below. -->
+     To change a value, edit the number and its --p width together. Bar colours: --emwl-bar-1/2/3 below.
+     Height is fixed (--emwl-height); the Webflow Designer shows the card with full bars (it doesn't run scripts). -->
 <style>
 .emwl{
   --emwl-heading:"Frankruhllibre","Frank Ruhl Libre","Times New Roman",serif;
   --emwl-body:"Poppins",Arial,sans-serif;
   --emwl-card:rgba(255,255,255,.75);   /* card fill; raise the last number for a more solid card */
+  --emwl-border:rgba(255,255,255,.1);  /* light 10% border */
+  --emwl-height:28rem;                 /* fixed card height */
   --emwl-title:#00346B;
   --emwl-text:#1A1A1A;
   --emwl-track:rgba(0,52,107,.1);
@@ -13,17 +16,21 @@
   --emwl-bar-2:#00346B;  /* Lost at least 5%: navy */
   --emwl-bar-3:#057FFF;  /* Lost at least 10%: blue */
   --emwl-ease:cubic-bezier(.22,1,.36,1);
-  box-sizing:border-box;width:100%;
+  box-sizing:border-box;width:100%;min-width:16rem;height:var(--emwl-height);
+  display:flex;flex-direction:column;
   padding:clamp(2rem,1.4rem + 2.4vw,3.4rem) clamp(1.5rem,1rem + 2vw,2.75rem) clamp(2rem,1.4rem + 2vw,2.75rem);
-  border-radius:8px;background:var(--emwl-card);color:var(--emwl-text);
+  border:.094rem solid var(--emwl-border);border-radius:8px;
+  background:var(--emwl-card);background-clip:padding-box;color:var(--emwl-text);
   -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
   font-family:var(--emwl-body);-webkit-font-smoothing:antialiased;
 }
+/* Webflow wraps embeds in a .w-embed box; stretch it so the card never collapses to zero width (e.g. inside a flex layout) */
+.w-embed:has(> .emwl){flex:1 1 0;min-width:16rem}
 .emwl *,.emwl *::before,.emwl *::after{box-sizing:border-box;font-family:var(--emwl-body)}
 .emwl :where(h3,p,ul,li){margin:0;padding:0;list-style:none}
 .emwl h3{font-family:var(--emwl-heading);font-weight:400;font-size:clamp(1.5rem,1.1rem + 1.2vw,2.25rem);line-height:1.2;letter-spacing:-.01em;color:var(--emwl-title)}
 .emwl__sub{margin-top:.75rem!important;font-weight:500;font-size:clamp(.9375rem,.9rem + .2vw,1.125rem);line-height:1.4;letter-spacing:-.01em}
-.emwl ul{display:flex;flex-direction:column;gap:clamp(2rem,1.5rem + 1.5vw,2.9rem);margin-top:clamp(2rem,1.6rem + 1.4vw,3.1rem)}
+.emwl ul{display:flex;flex-direction:column;gap:clamp(1.5rem,1.2rem + 1.2vw,2.5rem);margin-top:auto;padding-top:1.5rem!important}
 .emwl li{display:grid;grid-template-columns:1fr auto;column-gap:1rem;row-gap:.95rem;font-size:clamp(1rem,.95rem + .3vw,1.25rem);line-height:1.33}
 .emwl__bar{grid-column:1/-1;height:.875rem;padding:.156rem .27rem;border-radius:8px;background:var(--emwl-track)}
 .emwl__bar span{display:block;height:100%;width:var(--p);border-radius:8px;transform-origin:left center}
@@ -72,5 +79,4 @@
     io.observe(card);
   });
 })();
-</script>
-</div></section></body></html>
+</script></div></section></body></html>
