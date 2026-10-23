@@ -5,7 +5,10 @@
 .emlc{
   --emlc-heading:"Frankruhllibre","Frank Ruhl Libre","Times New Roman",serif;
   --emlc-body:"Poppins",Arial,sans-serif;
-  --emlc-line:#1D6BD0;
+  --emlc-green:#12935A;     /* line colours, one per card (set on each card below) */
+  --emlc-navy:#00346B;
+  --emlc-blue:#057FFF;
+  --emlc-line:var(--emlc-blue);
   --emlc-card-bg:#F6F8FC;   /* solid so stacked cards don't show through; matches 50% white on the #ECF1F8 page bg */
   --emlc-card-border:#DEE7F3;
   --emlc-stack-top:clamp(5.5rem,4rem + 6vh,8rem); /* distance from the top of the screen where cards stick; raise if the nav is taller */
@@ -39,7 +42,7 @@
 </style>
 
 <div class="emlc">
-  <div class="emlc-card" style="--i:0">
+  <div class="emlc-card" style="--i:0;--emlc-line:var(--emlc-green)">
     <div><h4>Total cholesterol</h4><div class="emlc-num" data-count>-13<small>%</small></div><p>5.71 → 4.94 mmol/L</p></div>
     <svg viewBox="0 0 351 203" role="img" aria-label="Total cholesterol fell from 5.71 to 4.94 mmol/L">
       <defs><linearGradient id="emlc-g1" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#C8D6EA" stop-opacity=".9"/><stop offset="1" stop-color="#C8D6EA" stop-opacity="0"/></linearGradient></defs>
@@ -50,7 +53,7 @@
       <text class="emlc-start" x="13.8" y="44">5.71 mmol/L</text><text class="emlc-end" x="350" y="158" text-anchor="end">4.94 mmol/L</text>
     </svg>
   </div>
-  <div class="emlc-card" style="--i:1">
+  <div class="emlc-card" style="--i:1;--emlc-line:var(--emlc-navy)">
     <div><h4>LDL cholesterol</h4><div class="emlc-num" data-count>-16<small>%</small></div><p>3.77 → 3.16 mmol/L</p></div>
     <svg viewBox="0 0 351 203" role="img" aria-label="LDL cholesterol fell from 3.77 to 3.16 mmol/L">
       <defs><linearGradient id="emlc-g2" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#C8D6EA" stop-opacity=".9"/><stop offset="1" stop-color="#C8D6EA" stop-opacity="0"/></linearGradient></defs>
@@ -61,7 +64,7 @@
       <text class="emlc-start" x="13.8" y="44">3.77 mmol/L</text><text class="emlc-end" x="350" y="168" text-anchor="end">3.16 mmol/L</text>
     </svg>
   </div>
-  <div class="emlc-card" style="--i:2">
+  <div class="emlc-card" style="--i:2;--emlc-line:var(--emlc-blue)">
     <div><h4>Triglycerides</h4><div class="emlc-num" data-count>-29<small>%</small></div><p>1.64 → 1.17 mmol/L</p></div>
     <svg viewBox="0 0 351 203" role="img" aria-label="Triglycerides fell from 1.64 to 1.17 mmol/L">
       <defs><linearGradient id="emlc-g3" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#C8D6EA" stop-opacity=".9"/><stop offset="1" stop-color="#C8D6EA" stop-opacity="0"/></linearGradient></defs>
